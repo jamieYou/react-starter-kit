@@ -1,0 +1,43 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false,
+        "targets": {
+          "browsers": [
+            "last 2 versions",
+            "safari >= 8"
+          ]
+        },
+        "useBuiltIns": true
+      }
+    ],
+    "stage-0",
+    "react",
+    "flow"
+  ],
+  "plugins": [
+    "lodash",
+    [
+      "import",
+      {
+        "style": true,
+        "libraryName": "antd-mobile"
+      }
+    ],
+    "transform-decorators-legacy"
+  ],
+  "env": {
+    "development": {
+      "presets": [
+        "react-hmre"
+      ]
+    },
+    "production": {
+      "plugins": [
+        "transform-react-remove-prop-types"
+      ]
+    }
+  }
+}

@@ -1,0 +1,27 @@
+.custom-list {
+  height: 100%;
+
+  .am-list-header {
+    padding: 0;
+  }
+
+  .am-list-view-scrollview-content {
+    width: 100%;
+  }
+
+  .am-list-body {
+    background: #f5f5f9;
+  }
+
+  .am-list-footer {
+    text-align: center;
+
+    .am-activity-indicator {
+      justify-content: center;
+    }
+  }
+
+  .am-pull-to-refresh-content-wrapper {
+    overflow: visible;
+  }
+}
