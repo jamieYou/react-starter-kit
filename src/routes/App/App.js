@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import { reactRouterCache } from '@component'
 import type { htmlNode } from '@constants'
 
@@ -9,6 +9,6 @@ export default class App extends Component {
   }
 
   render() {
-    return this.props.children
+    return <div>{this.props.children}</div>
   }
 }
