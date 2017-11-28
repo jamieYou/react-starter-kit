@@ -4,7 +4,7 @@ const autoprefixer = require('autoprefixer')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const NODE_ENV = exports.NODE_ENV = process.env.NODE_ENV || 'development'
-const __DEV__ = exports.__DEV__ = NODE_ENV === 'development'
+const __DEV__ = exports.__DEV__ = NODE_ENV === 'development' || NODE_ENV === 'test'
 
 const srcPath = exports.srcPath = path.join(__dirname, "../src")
 exports.dllPath = path.join(__dirname, "../dll")
@@ -32,6 +32,7 @@ exports.resolve = {
     '@utils': path.join(srcPath, "utils"),
     '@constants': path.join(srcPath, "constants"),
     '@image': path.join(srcPath, "image"),
+    '@routes': path.join(srcPath, "routes"),
     mobx: 'mobx/lib/mobx.js',
     MobX: 'mobx/lib/mobx.js',
   },
@@ -41,7 +42,7 @@ exports.resolve = {
 exports.shareRules = [
   {
     test: /(\.js|\.jsx)$/,
-    include: srcPath,
+    exclude: /node_modules/,
     use: ['babel-loader']
   },
   { test: /\.eot(\?v=\d+.\d+.\d+)?$/, use: 'file-loader' },

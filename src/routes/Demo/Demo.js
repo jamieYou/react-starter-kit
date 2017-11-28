@@ -9,10 +9,10 @@ import './Demo.scss'
 export default class Demo extends Component {
   props: pageProps
 
-  topicsStore: TopicsStore = TopicsStore.findOrCreate('all')
+  topicsStore: TopicsStore = TopicsStore.findOrCreate(this.props.match.params.tab)
 
   componentDidMount() {
-    this.topicsStore.fetchTopics()
+    if (!this.topicsStore.isFulfilled) return this.topicsStore.fetchTopics()
   }
 
   render() {
@@ -30,7 +30,7 @@ export default class Demo extends Component {
         {
           this.topicsStore.data.map(topic =>
             <List.Item key={topic.id}>
-              <Link to={{ pathname: `/demo/${topic.id}`, state: { modalKey: this.props.location.modalKey } }}>
+              <Link to={{ pathname: `/topic/${topic.id}`, state: { modalKey: this.props.location.modalKey } }}>
                 {topic.title}
               </Link>
             </List.Item>

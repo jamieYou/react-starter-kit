@@ -1,8 +1,9 @@
 import fetch from 'isomorphic-fetch'
 import qs from 'qs'
 import _ from 'lodash'
+import { apiHost } from '@constants'
 
-const apiUrl = `${location.origin}/api/v1`
+const apiUrl = `${apiHost}/api/v1`
 
 async function jsonParse(response) {
   const text = await response.text()
@@ -27,7 +28,7 @@ export default async function cFetch(pathname, options): Promise<responseType, e
     // fetch api 默认不支持 set-cookie
     // 增加 credentials 参数来支持 set-cookie
     // https://github.com/github/fetch#sending-cookies
-    credentials: 'include',
+    // credentials: 'include',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',

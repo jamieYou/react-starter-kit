@@ -1,5 +1,7 @@
 import type { Component } from 'react'
 
+export { apiHost } from "./environment"
+
 export type htmlNode = string | Component | Array<string | Component>
 
 export type location = {
