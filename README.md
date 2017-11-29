@@ -1,17 +1,17 @@
 # react-mobx-starter-kit
 
-这个启动包的是为了让你使用一整套最新react的生态，所有都是可配置，富特性，基于webpack已经提供代码热加载，使用sass预处理css，代码分割等等更多。
+  这个启动包的是为了让你使用一整套最新react的生态，所有都是可配置，富特性，基于webpack已经提供代码热加载，使用sass预处理css，代码分割等等更多。
 
 # 特性
- * [react](https://doc.react-china.org/)
- * [mobx](http://cn.mobx.js.org/)
- * [react-router@v4](http://reacttraining.cn/)
- * [webpack](https://doc.webpack-china.org/)
- * [babel](https://babeljs.cn/)
- * [express](http://www.expressjs.com.cn/)
- * [eslint](http://eslint.cn/)
- * [flow](https://flow.org/en/)
- * [react-router-cache](https://github.com/jamieYou/react-router-cache)
+  * [react](https://doc.react-china.org/)
+  * [mobx](http://cn.mobx.js.org/)
+  * [react-router@v4](http://reacttraining.cn/)
+  * [webpack](https://doc.webpack-china.org/)
+  * [babel](https://babeljs.cn/)
+  * [express](http://www.expressjs.com.cn/)
+  * [eslint](http://eslint.cn/)
+  * [flow](https://flow.org/en/)
+  * [react-router-cache](https://github.com/jamieYou/react-router-cache)
 
 # 需求配置
   * node
@@ -32,6 +32,8 @@ $ npm start       # Compile and launch
 |------------------|-----------|
 |`start`|服务启动在3000端口，代码热替换开启。|
 |`vendor`|编译配置好的第三方库到dll目录下|
+|`test`|启动karma测试环境|
+|`staging`|编译程序到dist目录下（默认目录~/dist）。|
 |`build`|编译程序到dist目录下（默认目录~/dist）。|
 |`start:prod`|在production环境下打包代码，并启动node服务，均不具备热加载功能|
 |`lint`|检查所有前端js文件是否规范。|
@@ -82,14 +84,17 @@ $ npm start       # Compile and launch
   其他小插件就不一一解析了。
 
 # 样式
- 1. 默认样式库为antd-mobile
- 2. 支持less和scss的处理。less的主题文件在 config/theme.js 里，参考less-loader的modifyVars特性
- 3. postCss默认开启autoprefixer和rem转换处理
- 4. 默认调用[utils/mobileHack.js](utils/mobileHack.js)，配合rem的工具
+  1. 默认样式库为antd-mobile
+  2. 支持less和scss的处理。less的主题文件在 config/theme.js 里，参考less-loader的modifyVars特性
+  3. postCss默认开启autoprefixer和rem转换处理
+  4. 默认调用[utils/mobileHack.js](utils/mobileHack.js)，配合rem的工具
 
 # 服务端
- 开发环境下使用express作为服务器，提供了webpack-dev-middleware 和 webpack-hot-middleware（代码热替换）。
- 使用jade渲染html，支持webpack多入口的情景。
+  开发环境下使用express作为服务器，提供了webpack-dev-middleware 和 webpack-hot-middleware（代码热替换）。
+  使用jade渲染html，支持webpack多入口的情景。
+    
+# 集成测试
+  集成了karma和mocha的测试环境
     
 # 关于代码规范
 ## 前端模块规范
@@ -128,4 +133,4 @@ $ npm start       # Compile and launch
 
 # 案例
 
-[c-node-v2](https://github.com/jamieYou/c-node-v2)
+  [c-node-v2](https://github.com/jamieYou/c-node-v2)

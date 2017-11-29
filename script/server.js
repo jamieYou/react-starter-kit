@@ -5,6 +5,8 @@ const logger = require('morgan')
 const proxy = require('http-proxy-middleware')
 const _ = require('lodash')
 const compression = require('compression')
+const IPv4 = require('ipv4')
+const open = require("open")
 
 const app = express()
 const _DEV_ = _.get(process.env, 'NODE_ENV', 'development') === 'development'
@@ -78,4 +80,5 @@ app.use(function (err, req, res, next) {
 app.listen(port, () => {
   console.warn(process.env.NODE_ENV || 'development')
   console.log(`server running @${port}`)
+  open(`http://${IPv4}:${port}/`)
 })
