@@ -32,7 +32,9 @@ export default class ViewController extends Component {
 
     else if (action === 'POP') {
       const nextKey = nextLocation.key
-      this.removeLocation(this.lastLocationKey)
+      const keys = [...this.locationList.keys()]
+      keys.reverse().forEach(key => key !== nextKey && this.removeLocation(key))
+
       if (!this.locationList.has(nextKey)) {
         this.addLocation(nextKey, nextLocation)
       }

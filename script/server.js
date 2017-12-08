@@ -1,12 +1,9 @@
 const express = require('express')
 const path = require('path')
-const favicon = require('serve-favicon')
 const logger = require('morgan')
 const proxy = require('http-proxy-middleware')
 const _ = require('lodash')
 const compression = require('compression')
-const IPv4 = require('ipv4')
-const open = require("open")
 
 const app = express()
 const _DEV_ = _.get(process.env, 'NODE_ENV', 'development') === 'development'
@@ -17,7 +14,6 @@ const rootPath = path.join(__dirname, '../')
 
 app.set('views', path.join(rootPath, 'views'))
 app.set('view engine', 'jade')
-app.use(favicon(path.join(rootPath, publicPath, 'favicon.ico')))
 app.use(logger('dev'))
 
 app.use(compression({
@@ -50,7 +46,13 @@ if (_DEV_) {
     heartbeat: 2000
   }))
 
-  app.use('/', (req, res) => res.render('layout', { name: 'index' }))
+  app.use('/', (req, res) => {
+    const filename = path.join(bundler.outputPath, 'index.html')
+    const result = bundler.outputFileSystem.readFileSync(filename)
+    res.set('content-type', 'text/html')
+    res.send(result)
+    res.end()
+  })
 } else {
   app.use('/', (req, res) => res.sendfile('dist/index.html'))
 }
@@ -80,5 +82,4 @@ app.use(function (err, req, res, next) {
 app.listen(port, () => {
   console.warn(process.env.NODE_ENV || 'development')
   console.log(`server running @${port}`)
-  open(`http://${IPv4}:${port}/`)
 })

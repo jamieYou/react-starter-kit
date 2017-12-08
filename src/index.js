@@ -1,9 +1,9 @@
 import 'babel-polyfill'
-import { render } from 'react-dom'
-import routes from './routes'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Routes from './routes'
 import { mobileHack } from '@utils'
-
-require('./favicon.ico')
+import { AppContainer } from 'react-hot-loader'
 
 mobileHack()
 
@@ -14,7 +14,19 @@ if (process.env.NODE_ENV !== 'production') {
   })
 }
 
-render(
-  routes,
-  document.querySelector('#app'),
-)
+function render(Component) {
+  ReactDOM.render(
+    <AppContainer warnings={false}>
+      <Component/>
+    </AppContainer>,
+    document.querySelector('#app'),
+  )
+}
+
+render(Routes)
+
+if (module.hot) {
+  module.hot.accept('./routes', () => {
+    render(Routes)
+  })
+}

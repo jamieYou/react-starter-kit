@@ -16,7 +16,7 @@ export class TopicsStore extends StoreHelper {
     complete: false
   }
 
-  @observable data: IObservableArray<topic> = []
+  @observable.shallow data: IObservableArray<topic> = []
 
   @fetchAction
   async fetchTopics(page = 1, limit = 10) {

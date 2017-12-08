@@ -8,8 +8,7 @@ const { postcss, resolve, shareRules, __DEV__, GLOBALS, dllPath, dllContext } = 
 
 const antdMobileVendor = _.flatten(
   [
-    'button', 'white-space', 'list', 'activity-indicator', 'tabs',
-    'modal', 'toast', 'list-view', 'textarea-item', 'input-item', 'pull-to-refresh'
+    'button', 'white-space', 'list', 'activity-indicator', 'toast', 'list-view', 'pull-to-refresh'
   ].map(component => {
     return [`antd-mobile/lib/${component}/index.js`, `antd-mobile/lib/${component}/style/index.less`]
   })
@@ -17,7 +16,8 @@ const antdMobileVendor = _.flatten(
 
 const vendor = [
   'react', 'react-dom', 'prop-types', 'rc-form', 'mobx', 'mobx-react', 'js-cookie',
-  'qs', 'react-router', 'react-router-dom', 'isomorphic-fetch', ...antdMobileVendor
+  'qs', 'react-router', 'react-router-dom', 'isomorphic-fetch', 'react-hot-loader',
+  ...antdMobileVendor
 ]
 
 module.exports = {

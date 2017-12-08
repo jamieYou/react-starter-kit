@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { observer, TopicsStore } from '@store'
-import { pageProps } from '@constants'
+import type { pageProps } from '@constants'
 import { List, ActivityIndicator } from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import './Demo.scss'

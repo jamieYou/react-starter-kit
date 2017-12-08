@@ -2,8 +2,7 @@ import fetch from 'isomorphic-fetch'
 import qs from 'qs'
 import _ from 'lodash'
 import { apiHost } from '@constants'
-
-const apiUrl = `${apiHost}/api/v1`
+import { urlConcat } from '@utils'
 
 async function jsonParse(response) {
   const text = await response.text()
@@ -21,8 +20,10 @@ export type errType = {
   message: string
 }
 
-export default async function cFetch(pathname, options): Promise<responseType, errType> {
-  let mergeUrl = apiUrl + pathname
+export type apiRes = Promise<responseType, errType>
+
+export default async function cFetch(pathname, options): apiRes {
+  let mergeUrl = urlConcat(apiHost, 'api/v1', pathname)
   const defaultOptions = {
     method: 'GET',
     // fetch api 默认不支持 set-cookie

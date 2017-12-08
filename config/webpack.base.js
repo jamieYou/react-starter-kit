@@ -39,11 +39,18 @@ exports.resolve = {
   extensions: ['.js', '.jsx', '.json']
 }
 
+const lessLoaderOptinos = `less-loader?{"modifyVars":${JSON.stringify(require('./theme'))}}`
+
 exports.shareRules = [
   {
-    test: /(\.js|\.jsx)$/,
+    test: /\.js$/,
     exclude: /node_modules/,
     use: ['babel-loader']
+  },
+  {
+    test: /\.jsx$/,
+    exclude: /node_modules/,
+    use: __DEV__ ? ['react-hot-loader/webpack', 'babel-loader'] : ['babel-loader']
   },
   { test: /\.eot(\?v=\d+.\d+.\d+)?$/, use: 'file-loader' },
   { test: /\.(woff|woff2)$/, use: 'file-loader' },
@@ -54,9 +61,9 @@ exports.shareRules = [
     test: /(\.css|\.less)$/,
     include: path.join(__dirname, "../node_modules"),
     use: __DEV__
-      ? ['style-loader', 'css-loader', 'postcss-loader', `less-loader?{"modifyVars":${JSON.stringify(require('./theme'))}}`]
+      ? ['style-loader', 'css-loader?sourceMap', 'postcss-loader', lessLoaderOptinos]
       : ExtractTextPlugin.extract({
-        use: ['css-loader?minimize', 'postcss-loader', `less-loader?{"modifyVars":${JSON.stringify(require('./theme'))}}`]
+        use: ['css-loader?minimize', 'postcss-loader', lessLoaderOptinos]
       })
   },
   {
