@@ -75,7 +75,6 @@ export default class StoreHelper {
         isRejected: false,
         isFulfilled: true,
         error: null,
-        ...newState
       }, newState)
     }
     console.log("%cfulfilled", "color:green", this.logMessage(actionName))

@@ -13,6 +13,7 @@ module.exports = {
   context: srcPath,
   entry: {
     index: [
+      'react-hot-loader/patch',
       'webpack-hot-middleware/client?reload=true',
       './index'
     ]
@@ -37,6 +38,7 @@ module.exports = {
       }
     }),
     new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.htmlnew webpack.HotModuleReplacementPlugin())
+    new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({

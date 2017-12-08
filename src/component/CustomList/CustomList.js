@@ -67,6 +67,7 @@ export default class CustomList extends Component {
 
   @autoBind
   async onRefresh() {
+    if (this.state.refreshing) return
     this.setState({ refreshing: true })
     await this.props.fetchData()
     this.setState({ refreshing: false })
