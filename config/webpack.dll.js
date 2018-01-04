@@ -10,13 +10,13 @@ const antdMobileVendor = _.flatten(
   [
     'button', 'white-space', 'list', 'activity-indicator', 'toast', 'list-view', 'pull-to-refresh'
   ].map(component => {
-    return [`antd-mobile/lib/${component}/index.js`, `antd-mobile/lib/${component}/style/index.less`]
+    return [`antd-mobile/lib/${component}/index.js`, `antd-mobile/lib/${component}/style`]
   })
 )
 
 const vendor = [
-  'react', 'react-dom', 'prop-types', 'rc-form', 'mobx', 'mobx-react', 'js-cookie',
-  'qs', 'react-router', 'react-router-dom', 'isomorphic-fetch', 'react-hot-loader',
+  'react', 'react-dom', 'prop-types', 'mobx', 'mobx-react', 'qs', 'react-router', 'react-router-dom',
+  'isomorphic-fetch',
   ...antdMobileVendor
 ]
 
@@ -30,9 +30,8 @@ module.exports = {
     library: '[name]_library',
   },
   resolve,
-  devtool: __DEV__ ? 'source-map' : false,
+  devtool: __DEV__ ? 'cheap-module-eval-source-map' : false,
   plugins: [
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.LoaderOptionsPlugin({
       options: {
         debug: true,

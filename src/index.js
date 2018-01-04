@@ -1,9 +1,8 @@
 import 'babel-polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Routes from './routes'
 import { mobileHack } from '@utils'
-import { AppContainer } from 'react-hot-loader'
+import Routes from './routes'
 
 mobileHack()
 
@@ -14,19 +13,29 @@ if (process.env.NODE_ENV !== 'production') {
   })
 }
 
-function render(Component) {
-  ReactDOM.render(
-    <AppContainer warnings={false}>
-      <Component/>
-    </AppContainer>,
-    document.querySelector('#app'),
-  )
+if (process.env.__DEV__) {
+  const { AppContainer } = require('react-hot-loader')
+  const render = Component => {
+    ReactDOM.render(
+      <AppContainer warnings={false}>
+        <Component/>
+      </AppContainer>,
+      document.querySelector('#app'),
+    )
+  }
+
+  render(Routes)
+
+  if (module.hot) {
+    module.hot.accept('./routes', () => {
+      render(Routes)
+    })
+  }
 }
 
-render(Routes)
-
-if (module.hot) {
-  module.hot.accept('./routes', () => {
-    render(Routes)
-  })
+if (!process.env.__DEV__) {
+  ReactDOM.render(
+    <Routes/>,
+    document.querySelector('#app'),
+  )
 }

@@ -30,7 +30,7 @@ export default class Demo extends Component {
         {
           this.topicsStore.data.map(topic =>
             <List.Item key={topic.id}>
-              <Link to={{ pathname: `/topic/${topic.id}`, state: { modalKey: this.props.location.modalKey } }}>
+              <Link to={`/topic/${topic.id}`}>
                 {topic.title}
               </Link>
             </List.Item>

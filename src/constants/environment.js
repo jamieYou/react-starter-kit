@@ -8,10 +8,10 @@ const environmentConfig = {
     apiHost: location.origin
   },
   "staging": {
-    apiHost: "https://cnodejs.org"
+    apiHost: location.origin
   },
   "production": {
-    apiHost: "https://cnodejs.org"
+    apiHost: location.origin
   },
 }
 

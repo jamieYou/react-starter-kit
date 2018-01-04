@@ -12,9 +12,10 @@ export function reactRouterCache(App: Component) {
     render() {
       return (
         <Route
-          render={({ location, history }) => {
+          render={({ location, history, match }) => {
             location.key = location.key || 'root'
             const props = {
+              match,
               location,
               history,
               App,

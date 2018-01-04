@@ -54,7 +54,8 @@ export default class CustomList extends Component {
   @autoBind
   handleReFetch(e) {
     e.preventDefault()
-    this.props.fetchData()
+    const { fetchMoreData, fetchData, dataList } = this.props
+    dataList.length ? fetchMoreData() : fetchData()
   }
 
   @autoBind

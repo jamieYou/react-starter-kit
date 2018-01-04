@@ -29,7 +29,7 @@ export default async function cFetch(pathname, options): apiRes {
     // fetch api 默认不支持 set-cookie
     // 增加 credentials 参数来支持 set-cookie
     // https://github.com/github/fetch#sending-cookies
-    // credentials: 'include',
+    credentials: 'include',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ export default async function cFetch(pathname, options): apiRes {
     return result
   } else {
     // 需要和后端定义错误信息的字段(error_msg)
-    const err = new Error(_.get(result, 'jsonResult.error_msg'))
+    const err = new Error(_.get(result, 'jsonResult.error', '未知错误'))
     err.status = result.status
     throw err
   }

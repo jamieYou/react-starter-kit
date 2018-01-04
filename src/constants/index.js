@@ -1,6 +1,7 @@
 import type { Component } from 'react'
 
 export { apiHost } from "./environment"
+export * from "./modelType"
 
 export type htmlNode = string | Component | Array<string | Component>
 
@@ -33,10 +34,4 @@ export type pageProps = {
   location: location,
   history: history,
   match: match,
-}
-
-export type rcForm = {
-  getFieldProps: (string, Object) => Object,
-  getFieldValue: string => any,
-  validateFields: ((Object, Object) => any) => void
 }

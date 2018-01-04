@@ -23,8 +23,8 @@
 $ git clone https://github.com/jamieYou/react-mobx-starter-kit.git
 $ cd react-mobx-starter-kit
 $ yarn            # Install project dependencies
-$ npm run vendor  # create dll
-$ npm start       # Compile and launch
+$ yarn vendor  # create dll
+$ yarn start       # Compile and launch
 ```
 
 # 脚本

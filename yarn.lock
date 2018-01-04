@@ -315,12 +315,6 @@ async-foreach@^0.1.3:
   version "0.1.3"
   resolved "http://registry.npm.taobao.org/async-foreach/download/async-foreach-0.1.3.tgz#36121f845c0578172de419a97dbeb1d16ec34542"
 
-async-validator@1.x:
-  version "1.7.1"
-  resolved "http://registry.npm.taobao.org/async-validator/download/async-validator-1.7.1.tgz#89d3d7a384ca5d05e0f07bf51754d591e2cfec61"
-  dependencies:
-    babel-runtime "6.x"
-
 async@^2.1.2, async@^2.1.5:
   version "2.5.0"
   resolved "http://registry.npm.taobao.org/async/download/async-2.5.0.tgz#843190fd6b7357a0b9e1c956edddd5ec8462b54d"
@@ -1867,14 +1861,6 @@ create-react-class@15.x, create-react-class@^15.6.0:
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
-create-react-class@^15.5.3:
-  version "15.6.0"
-  resolved "http://registry.npm.taobao.org/create-react-class/download/create-react-class-15.6.0.tgz#ab448497c26566e1e29413e883207d57cfe7bed4"
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.3.1"
-    object-assign "^4.1.1"
-
 cross-env@^5.0.5:
   version "5.0.5"
   resolved "http://registry.npm.taobao.org/cross-env/download/cross-env-5.0.5.tgz#4383d364d9660873dd185b398af3bfef5efffef3"
@@ -2209,10 +2195,6 @@ dom-converter@~0.1:
   resolved "http://registry.npm.taobao.org/dom-converter/download/dom-converter-0.1.4.tgz#a45ef5727b890c9bffe6d7c876e7b19cb0e17f3b"
   dependencies:
     utila "~0.3"
-
-dom-scroll-into-view@1.x:
-  version "1.2.1"
-  resolved "http://registry.npm.taobao.org/dom-scroll-into-view/download/dom-scroll-into-view-1.2.1.tgz#e8f36732dd089b0201a88d7815dc3f88e6d66c7e"
 
 dom-serialize@^2.2.0:
   version "2.2.1"
@@ -3320,7 +3302,7 @@ hoek@2.x.x:
   version "2.16.3"
   resolved "http://registry.npm.taobao.org/hoek/download/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
-hoist-non-react-statics@1.x, hoist-non-react-statics@^1.2.0:
+hoist-non-react-statics@^1.2.0:
   version "1.2.0"
   resolved "http://registry.npm.taobao.org/hoist-non-react-statics/download/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
 
@@ -3812,10 +3794,6 @@ jade@^1.11.0:
 js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.1.9"
   resolved "http://registry.npm.taobao.org/js-base64/download/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"
-
-js-cookie@^2.1.4:
-  version "2.1.4"
-  resolved "http://registry.npm.taobao.org/js-cookie/download/js-cookie-2.1.4.tgz#da4ec503866f149d164cf25f579ef31015025d8d"
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
@@ -5610,18 +5588,6 @@ rc-drawer@~0.4.9:
     babel-runtime "6.x"
     classnames "^2.2.4"
     prop-types "^15.5.10"
-
-rc-form@^1.4.6:
-  version "1.4.6"
-  resolved "http://registry.npm.taobao.org/rc-form/download/rc-form-1.4.6.tgz#7b307cd090b2ce1fe3b70c8eef1c707ff02972d4"
-  dependencies:
-    async-validator "1.x"
-    babel-runtime "6.x"
-    create-react-class "^15.5.3"
-    dom-scroll-into-view "1.x"
-    hoist-non-react-statics "1.x"
-    lodash "^4.17.4"
-    warning "^3.0.0"
 
 rc-gesture@^0.0.15:
   version "0.0.15"
