@@ -14,7 +14,7 @@ exports.dllContext = path.join(__dirname, "../")
 
 exports.GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
-  __DEV__
+  'process.env.__DEV__': __DEV__,
 }
 
 exports.postcss = () =>
@@ -36,7 +36,7 @@ exports.resolve = {
     mobx: 'mobx/lib/mobx.js',
     MobX: 'mobx/lib/mobx.js',
   },
-  extensions: ['.js', '.jsx', '.json']
+  extensions: ['.js', '.jsx']
 }
 
 const lessLoaderOptinos = `less-loader?{"modifyVars":${JSON.stringify(require('./theme'))}}`

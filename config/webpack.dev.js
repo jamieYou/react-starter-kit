@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 const { postcss, resolve, shareRules, GLOBALS, srcPath, dllPath, viewPath, dllContext } = require('./webpack.base.js')
 
-const publicPath = `http://${IPv4}:${process.env.PORT || '3000'}/`
+const publicPath = `http://${IPv4}:${process.env.PORT || '8000'}/`
 
 console.warn(publicPath)
 
@@ -38,7 +38,6 @@ module.exports = {
       }
     }),
     new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.htmlnew webpack.HotModuleReplacementPlugin())
-    new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({

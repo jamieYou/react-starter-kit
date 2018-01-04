@@ -46,7 +46,7 @@ export default class StoreHelper {
   @observable isFetching = false
   @observable isRejected = false
   @observable isFulfilled = false
-  @observable error: {} | null = null
+  @observable error: Error | null = null
 
   constructor(instanceKey = 'only') {
     this.instanceKey = instanceKey

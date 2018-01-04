@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Switch } from 'react-router-dom'
 import ViewModal from './ViewModal'
-import type { htmlNode, location, history } from '@constants'
+import type { htmlNode, location, history, match } from '@constants'
 
 type propsType = {
   routers: htmlNode,
   location: location,
   history: history,
+  match: match,
   App: Component,
 }
 
@@ -83,9 +84,9 @@ export default class ViewController extends Component {
   }
 
   render() {
-    const { App, routers } = this.props
+    const { App, routers, match, location, history } = this.props
     return (
-      <App>
+      <App match={match} location={location} history={history}>
         {
           this.mapLocation((location, key) => {
             const display = key === this.lastLocationKey ? null : 'none'

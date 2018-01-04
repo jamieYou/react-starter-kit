@@ -44,7 +44,8 @@ module.exports = {
       compressor: {
         warnings: false,
         drop_console: true,
-        drop_debugger: true
+        drop_debugger: true,
+        keep_fnames: true,
       }
     }),
     new HtmlWebpackPlugin({

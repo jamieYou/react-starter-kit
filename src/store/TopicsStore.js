@@ -1,12 +1,8 @@
 import { observable, StoreHelper, fetchAction, computed, IObservableArray } from './helper'
-import { getTopics } from '@api'
+import cFetch from '@api/cFetch'
 import { sleep } from '@utils'
-
-type topic = {
-  id: string,
-  title: string,
-  content: string
-}
+import { Topic } from '@constants'
+import _ from 'lodash'
 
 export class TopicsStore extends StoreHelper {
   tab = this.instanceKey
@@ -16,12 +12,16 @@ export class TopicsStore extends StoreHelper {
     complete: false
   }
 
-  @observable.shallow data: IObservableArray<topic> = []
+  @observable.shallow data: IObservableArray<Topic> = []
 
   @fetchAction
   async fetchTopics(page = 1, limit = 10) {
     await sleep(1000)
-    return getTopics({ page, limit, tab: this.tab, mdrender: false })
+    const params = { page, limit, tab: this.tab, mdrender: false }
+    const res = await cFetch('topics', { params, credentials: false })
+    const complete = res.jsonResult.data.length === 0
+    res.jsonResult.meta = _.merge({ limit: 40, page: 1, tab: 'all', mdrender: true, complete }, params)
+    return res
   }
 
   @computed
