@@ -4,12 +4,13 @@ const logger = require('morgan')
 const proxy = require('http-proxy-middleware')
 const _ = require('lodash')
 const compression = require('compression')
+const ipv4 = require('ipv4')
 
 const app = express()
 const _DEV_ = _.get(process.env, 'NODE_ENV', 'development') === 'development'
 const port = process.env.PORT || 8000
 const publicPath = _DEV_ ? 'src' : 'dist'
-const proxyTarget = 'https://cnodejs.org'
+const proxyTarget = 'https://cnodejs.org' || `http://${ipv4}:3000`
 const rootPath = path.join(__dirname, '../')
 
 app.set('views', path.join(rootPath, 'views'))

@@ -1,0 +1,57 @@
+@import './github-markdown.css';
+
+.topic-page {
+  .am-list-header {
+    padding: 0;
+    margin-bottom: 10px;
+  }
+
+  .topic-card {
+    justify-content: space-around;
+
+    .am-card-header-content {
+      img {
+        display: block;
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+
+      span {
+        flex: 1;
+      }
+    }
+  }
+
+  .reply-card {
+    .am-card-header-content {
+      img {
+        display: block;
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+
+      span {
+        flex: 1;
+      }
+    }
+  }
+
+  .markdown-body {
+    font-size: 15px;
+
+    p {
+      line-height: 20px;
+      word-wrap: break-word;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    pre {
+      overflow-x: scroll;
+    }
+  }
+}

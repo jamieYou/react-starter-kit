@@ -2,8 +2,8 @@ import FastClick from 'fastclick'
 
 export default function mobileHack() {
   document.addEventListener('DOMContentLoaded', function () {
-    FastClick.attach(document.body);
-  }, false);
+    FastClick.attach(document.body)
+  }, false)
 
   const setHTMLFont = () => {
     const { innerWidth } = window

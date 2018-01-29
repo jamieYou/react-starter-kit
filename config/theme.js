@@ -1,3 +1,3 @@
 module.exports = {
-  'hd': '2px',
+  'hd': '1px',
 }

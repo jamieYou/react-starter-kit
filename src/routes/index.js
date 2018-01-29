@@ -1,14 +1,15 @@
 import React from 'react'
 import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 import App from './App/App'
+import * as Topic from './Topic'
 
 export default function Routes() {
   return (
     <BrowserRouter>
       <App>
-        <Route exact path="/topics/:tab" component={require('./Demo/Demo').default}/>
-        <Route path="/topic/:id" component={require('./Demo/Detail').default}/>
-        <Redirect exact from="/" to="/topics/all"/>
+        <Route exact path="/topics" component={Topic.TopicsPage}/>
+        <Route exact path="/topics/:id" component={Topic.TopicPage}/>
+        <Redirect exact from="/" to="/topics"/>
         <Route component={() => <div>404</div>}/>
       </App>
     </BrowserRouter>

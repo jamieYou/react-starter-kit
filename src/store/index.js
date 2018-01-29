@@ -1,3 +1,6 @@
-export { TopicsStore } from './TopicsStore'
 export { observer } from 'mobx-react'
-export { action, computed, autorun } from 'MobX'
+export { action, computed, autorun } from 'mobx'
+export type { StoreHelper } from './helper/StoreHelper'
+export { Collection } from './Collection'
+export { TopicsStore } from './TopicsStore'
+export { TopicStore } from './TopicStore'
