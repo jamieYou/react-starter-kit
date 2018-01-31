@@ -8,7 +8,8 @@ const { postcss, resolve, shareRules, __DEV__, GLOBALS, dllPath, dllContext } = 
 
 const antdMobileVendor = _.flatten(
   [
-    'button', 'white-space', 'list', 'activity-indicator', 'toast', 'list-view', 'pull-to-refresh'
+    'button', 'list', 'activity-indicator', 'toast',
+    'list-view', 'pull-to-refresh', 'icon', 'modal',
   ].map(component => {
     return [`antd-mobile/lib/${component}/index.js`, `antd-mobile/lib/${component}/style`]
   })
@@ -16,7 +17,7 @@ const antdMobileVendor = _.flatten(
 
 const vendor = [
   'react', 'react-dom', 'prop-types', 'mobx', 'mobx-react', 'qs', 'react-router', 'react-router-dom',
-  'isomorphic-fetch',
+  'isomorphic-fetch', 'fastclick',
   ...antdMobileVendor
 ]
 
@@ -30,7 +31,7 @@ module.exports = {
     library: '[name]_library',
   },
   resolve,
-  devtool: __DEV__ ? 'cheap-module-eval-source-map' : false,
+  devtool: __DEV__ ? 'source-map' : false,
   plugins: [
     new webpack.LoaderOptionsPlugin({
       options: {

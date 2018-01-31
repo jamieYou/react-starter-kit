@@ -1,37 +1,66 @@
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
-import { ListView, ActivityIndicator, PullToRefresh } from 'antd-mobile'
-import type { IObservableArray } from 'MobX'
-import { observer, computed } from '@store'
+import { ListView, PullToRefresh } from 'antd-mobile'
+import type { IObservableArray } from '@store/helper'
+import type { htmlNode } from '@constants'
+import { observer, computed, Collection, StoreHelper } from '@store'
 import { autoBind } from '@utils'
-import './CustomList.scss'
+import ListFooter from './ListFooter'
+import './CustomList.less'
 
 @observer
 export default class CustomList extends Component {
   props: {
-    dataList: IObservableArray,
+    dataList?: IObservableArray | Object<Array>,
     renderRow: Function,
-    renderHeader?: Function,
-    isFetching: boolean,
-    isRejected: boolean,
-    complete: boolean,
-    fetchData: () => Promise,
-    fetchMoreData?: () => Promise,
+    store: Collection | StoreHelper,
+    initialListSize?: number,
+    renderHeader?: Function | htmlNode,
+    renderSectionHeader?: Function,
   }
 
-  listView: ListView
+  isCollection = this.props.store instanceof Collection
 
   dataSource = new ListView.DataSource({
     rowHasChanged: (row1, row2) => row1 !== row2,
+    sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
   })
 
   state = {
     refreshing: false
   }
 
-  componentDidMount() {
+  @computed
+  get dataSourceResult() {
+    const dataList = this.props.dataList || this.props.store.data
+    if (dataList.slice) {
+      return this.dataSource.cloneWithRows(dataList.slice())
+    } else {
+      return this.dataSource.cloneWithRowsAndSections(dataList)
+    }
+  }
+
+  @autoBind
+  onEndReached() {
+    const { fetchMoreData, isComplete, isFetching, isRejected } = this.props.store
+    if (!isComplete && !isFetching && !isRejected) fetchMoreData()
+  }
+
+  @autoBind
+  async onRefresh() {
+    if (this.state.refreshing) return
+    this.setState({ refreshing: true })
+    try {
+      await this.props.store.fetchData()
+    } finally {
+      this.setState({ refreshing: false })
+    }
+  }
+
+  getListViewDom(listView) {
+    if (!listView) return
     if (/MicroMessenger/i.test(navigator.userAgent)) {
-      const scrollView = findDOMNode(this.listView)
+      const scrollView = findDOMNode(listView)
       let startY = 0
       scrollView.addEventListener('touchstart', (e) => {
         startY = e.changedTouches[0].pageY
@@ -46,59 +75,42 @@ export default class CustomList extends Component {
     }
   }
 
-  @computed
-  get dataSourceResult() {
-    return this.dataSource.cloneWithRows(this.props.dataList.slice())
-  }
-
-  @autoBind
-  handleReFetch(e) {
-    e.preventDefault()
-    const { fetchMoreData, fetchData, dataList } = this.props
-    dataList.length ? fetchMoreData() : fetchData()
-  }
-
-  @autoBind
-  onEndReached() {
-    const { fetchMoreData, complete, isFetching, isRejected } = this.props
-    if (!complete && !isFetching && !isRejected) {
-      fetchMoreData()
-    }
-  }
-
-  @autoBind
-  async onRefresh() {
-    if (this.state.refreshing) return
-    this.setState({ refreshing: true })
-    await this.props.fetchData()
-    this.setState({ refreshing: false })
+  renderHeader = do {
+    const { renderHeader } = this.props
+    if (typeof renderHeader === 'function') renderHeader
+    else if (renderHeader) () => renderHeader
+    else null
   }
 
   @autoBind
   renderFooter() {
-    const { isFetching, isRejected, complete } = this.props
-    if (complete) return <div>没有更多了</div>
-    if (isFetching) return <ActivityIndicator text="加载中..."/>
-    if (isRejected) return <a href="#" onClick={this.handleReFetch}>重新加载</a>
+    return <ListFooter store={this.props.store}/>
   }
 
   render() {
+    const { initialListSize = 10, renderRow, renderSectionHeader } = this.props
+
     return (
       <ListView
-        ref={r => this.listView = r}
+        ref={this.getListViewDom}
         className="custom-list"
-        renderRow={this.props.renderRow}
-        renderHeader={this.props.renderHeader}
+        renderHeader={this.renderHeader}
+        renderSectionHeader={renderSectionHeader}
+        renderRow={renderRow}
         renderFooter={this.renderFooter}
         dataSource={this.dataSourceResult}
-        initialListSize={10}
-        onEndReached={this.onEndReached}
+        initialListSize={this.isCollection ? initialListSize : void 0}
+        pageSize={10}
+        onEndReached={this.isCollection ? this.onEndReached : null}
         onEndReachedThreshold={200}
-        pullToRefresh={<PullToRefresh
-          refreshing={this.state.refreshing}
-          onRefresh={this.onRefresh}
-          distanceToRefresh={window.devicePixelRatio * 25}
-        />}
+        pullToRefresh={
+          this.isCollection ?
+            <PullToRefresh
+              refreshing={this.state.refreshing}
+              onRefresh={this.onRefresh}
+              distanceToRefresh={window.devicePixelRatio * 25}
+            /> : null
+        }
       />
     )
   }

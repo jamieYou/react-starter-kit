@@ -2,17 +2,18 @@ const environment = process.env.NODE_ENV
 
 const environmentConfig = {
   "test": {
-    apiHost: "https://cnodejs.org"
+    apiHost: location.host
   },
   "development": {
-    apiHost: location.origin
+    apiHost: location.host
   },
   "staging": {
-    apiHost: location.origin
+    apiHost: location.host
   },
   "production": {
-    apiHost: location.origin
+    apiHost: location.host
   },
 }
 
-export const apiHost = environmentConfig[environment].apiHost
+export const { apiHost } = environmentConfig[environment]
+export const apiOrigin = `${location.protocol}//${apiHost}`

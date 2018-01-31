@@ -1,5 +1,5 @@
-import StoreHelper from './StoreHelper'
-import { action } from 'MobX'
+import type { StoreHelper } from './StoreHelper'
+import { action } from 'mobx'
 
 function fetchActionDecorator({ bound = false } = {}) {
   return function (target, name, descriptor) {
@@ -13,9 +13,10 @@ function fetchActionDecorator({ bound = false } = {}) {
       try {
         self.setPendingState(name)
         const res = await oldAction.apply(self, arguments)
-        return self.setFulfilledState(res, name)
+        self.setFulfilledState(res, name)
       } catch (err) {
-        throw  self.setRejectedState(err, name)
+        self.setRejectedState(err, name)
+        throw err
       }
     }
 

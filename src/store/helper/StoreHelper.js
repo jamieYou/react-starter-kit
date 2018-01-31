@@ -1,9 +1,10 @@
-import { action, observable, toJS, useStrict } from 'MobX'
+import { action, observable, toJS, useStrict } from 'mobx'
 import _ from 'lodash'
+import type { ErrorType } from '@api/cFetch'
 
 useStrict(true)
 
-export default class StoreHelper {
+export class StoreHelper<instanceKey: string> {
   static _instanceList: Map
 
   static get instanceList(): Map {
@@ -13,40 +14,44 @@ export default class StoreHelper {
     return this._instanceList
   }
 
+  static create(instanceKey, initialState) {
+    const store = new this(instanceKey)
+    initialState && store.setInitialState(initialState)
+    return store
+  }
+
   static findOrCreate(instanceKey, initialState) {
-    if (!instanceKey) {
-      throw new Error('instanceKey is not defined')
-    }
-    instanceKey = String(instanceKey)
-    let instance
+    instanceKey = this.checkKey(instanceKey)
     if (!this.instanceList.has(instanceKey)) {
-      this.instanceList.set(instanceKey, new this(instanceKey))
-      instance = this.instanceList.get(instanceKey)
-      initialState && instance.setInitialState(initialState)
-    } else {
-      instance = this.instanceList.get(instanceKey)
+      this.instanceList.set(instanceKey, this.create(instanceKey, initialState))
     }
-    return instance
+    return this.instanceList.get(instanceKey)
   }
 
   static createOrUpdate(instanceKey, initialState) {
+    instanceKey = this.checkKey(instanceKey)
+    if (!this.instanceList.has(instanceKey)) {
+      this.instanceList.set(instanceKey, this.create(instanceKey, initialState))
+    } else {
+      initialState && this.instanceList.get(instanceKey).setInitialState(initialState)
+    }
+    return this.instanceList.get(instanceKey)
+  }
+
+  static checkKey(instanceKey) {
     if (!instanceKey) {
       throw new Error('instanceKey is not defined')
     }
-    instanceKey = String(instanceKey)
-    if (!this.instanceList.has(instanceKey)) {
-      this.instanceList.set(instanceKey, new this(instanceKey))
-    }
-    const instance = this.instanceList.get(instanceKey)
-    initialState && instance.setInitialState(initialState)
-    return instance
+    return String(instanceKey)
   }
 
   instanceKey: string
   @observable isFetching = false
   @observable isRejected = false
   @observable isFulfilled = false
-  @observable error: Error | null = null
+  @observable error: ErrorType | null = null
+
+  fetchData: Function
 
   constructor(instanceKey = 'only') {
     this.instanceKey = instanceKey
@@ -64,33 +69,29 @@ export default class StoreHelper {
   }
 
   @action
-  setFulfilledState(response = {} | Function, actionName) {
+  setFulfilledState(response: {} | Function, actionName) {
     if (this.isFetching) {
-      if (typeof response === 'function') {
-        response = response()
-      }
-      const newState = _.get(response, 'jsonResult', response)
+      const newState = typeof response === 'function' ? null : _.get(response, 'jsonResult', response)
       Object.assign(this, {
         isFetching: false,
         isRejected: false,
         isFulfilled: true,
         error: null,
       }, newState)
+      typeof response === 'function' && response()
     }
     console.log("%cfulfilled", "color:green", this.logMessage(actionName))
-    return response
   }
 
   @action
-  setRejectedState(error = {}, actionName) {
+  setRejectedState(error, actionName) {
     const nextState = {
-      error: _.get(error, 'jsonResult', error),
+      error,
       isFetching: false,
       isRejected: true,
     }
     Object.assign(this, nextState)
     console.log("%crejected", "color:red", this.logMessage(actionName))
-    return error
   }
 
   logMessage(actionName) {

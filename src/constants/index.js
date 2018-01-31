@@ -1,7 +1,6 @@
 import type { Component } from 'react'
 
-export { apiHost } from "./environment"
-export * from "./modelType"
+export * from "./environment"
 
 export type htmlNode = string | Component | Array<string | Component>
 
@@ -34,4 +33,11 @@ export type pageProps = {
   location: location,
   history: history,
   match: match,
+  parameters: {},
+}
+
+export interface SpriteSymbol {
+  id: string;
+  content: string;
+  viewBox: string;
 }

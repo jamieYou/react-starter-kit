@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Switch } from 'react-router-dom'
 import ViewModal from './ViewModal'
+import { LocationEvent } from '@utils'
 import type { htmlNode, location, history, match } from '@constants'
 
 type propsType = {
@@ -33,11 +34,13 @@ export default class ViewController extends Component {
 
     else if (action === 'POP') {
       const nextKey = nextLocation.key
-      const keys = [...this.locationList.keys()]
-      keys.reverse().forEach(key => key !== nextKey && this.removeLocation(key))
+      this.removeLocation(location.key)
+      LocationEvent.destroy(location.key)
 
       if (!this.locationList.has(nextKey)) {
         this.addLocation(nextKey, nextLocation)
+      } else {
+        LocationEvent.tryReshowPage(nextKey)
       }
     }
 

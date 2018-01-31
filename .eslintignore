@@ -1,5 +1,1 @@
-node_modules/**
-dist/*
-dll/*
-test/*
 src/store/helper/*

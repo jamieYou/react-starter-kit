@@ -19,22 +19,24 @@ exports.GLOBALS = {
 
 exports.postcss = () =>
   [pxtorem({
-    rootValue: 100,
+    rootValue: 50,
     propWhiteList: [],
     minPixelValue: 2,
   }), autoprefixer]
 
 exports.resolve = {
+  modules: [path.join(__dirname, '../node_modules')],
   alias: {
     '@store': path.join(srcPath, "store"),
+    '@model': path.join(srcPath, "model"),
     '@component': path.join(srcPath, "component"),
     '@api': path.join(srcPath, "api"),
     '@utils': path.join(srcPath, "utils"),
     '@constants': path.join(srcPath, "constants"),
     '@image': path.join(srcPath, "image"),
     '@routes': path.join(srcPath, "routes"),
-    mobx: 'mobx/lib/mobx.js',
-    MobX: 'mobx/lib/mobx.js',
+    '@style': path.join(srcPath, "style"),
+    mobx: 'mobx/lib/mobx.module.js',
   },
   extensions: ['.js', '.jsx']
 }
@@ -55,24 +57,15 @@ exports.shareRules = [
   { test: /\.eot(\?v=\d+.\d+.\d+)?$/, use: 'file-loader' },
   { test: /\.(woff|woff2)$/, use: 'file-loader' },
   { test: /\.ttf(\?v=\d+.\d+.\d+)?$/, use: 'file-loader' },
-  { test: /\.(jpe?g|png|gif|svg)$/i, use: 'url-loader?limit=10000' },
+  { test: /\.(jpe?g|png|gif)$/i, use: 'url-loader?limit=10000' },
   { test: /\.ico$/, use: 'file-loader?name=[name].[ext]' },
+  { test: /\.svg$/, use: 'svg-sprite-loader' },
   {
     test: /(\.css|\.less)$/,
-    include: path.join(__dirname, "../node_modules"),
     use: __DEV__
       ? ['style-loader', 'css-loader?sourceMap', 'postcss-loader', lessLoaderOptinos]
       : ExtractTextPlugin.extract({
         use: ['css-loader?minimize', 'postcss-loader', lessLoaderOptinos]
-      })
-  },
-  {
-    test: /(\.css|\.scss)$/,
-    include: srcPath,
-    use: __DEV__
-      ? ['style-loader', 'css-loader?sourceMap', 'postcss-loader', 'sass-loader']
-      : ExtractTextPlugin.extract({
-        use: ['css-loader?minimize', 'postcss-loader', 'sass-loader']
       })
   },
 ]
