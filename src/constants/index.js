@@ -10,7 +10,6 @@ export type location = {
   pathname: string,
   search: string,
   state?: Object,
-  modalKey?: string,
 }
 
 export type history = {

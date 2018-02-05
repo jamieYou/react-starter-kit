@@ -1,7 +1,6 @@
-import { observable, IObservableArray } from './helper'
-import { Collection } from './Collection'
+import { IObservableArray, Collection } from './helper'
 import type { SimpleTopic } from '@model'
-import cFetch from '@api/cFetch'
+import { cFetch } from '@utils'
 
 export class TopicsStore extends Collection {
   tab = this.instanceKey
@@ -11,19 +10,19 @@ export class TopicsStore extends Collection {
     tab: this.tab,
   }
 
-  @observable meta = {
+  meta = {
     total: 100,
     page: 1,
     per_page: 20,
   }
 
-  @observable.shallow data: IObservableArray<SimpleTopic> = []
+  data: IObservableArray<SimpleTopic>
 
   async fetchApi(params) {
     params.limit = params.per_page
     const res = await cFetch('topics', { params })
     const { per_page, page } = params
-    res.jsonResult.meta = { per_page, page, total: 100 }
+    res.data.meta = { per_page, page, total: 100 }
     return res
   }
 }

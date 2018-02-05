@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsParallelPlugin = require('webpack-uglify-parallel')
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
-const { postcss, resolve, shareRules, GLOBALS, srcPath, dllPath, distPath, viewPath, dllContext } = require('./webpack.base.js')
+const { resolve, shareRules, GLOBALS, srcPath, dllPath, distPath, viewPath, dllContext, NODE_ENV } = require('./webpack.base.js')
 
 module.exports = {
   context: srcPath,
@@ -27,15 +27,6 @@ module.exports = {
       context: dllContext,
       manifest: require(path.join(dllPath, 'vendor-manifest.min.json')),
     }),
-    new webpack.LoaderOptionsPlugin({
-      options: {
-        bail: true,
-        debug: false,
-        devtool: false, // more info:https://webpack.github.io/docs/build-performance.html#sourcemaps and https://webpack.github.io/docs/configuration.html#devtool
-        noInfo: true, // set to false to see a list of every file being bundled.
-        postcss,
-      }
-    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.htmlnew webpack.HotModuleReplacementPlugin())
     new UglifyJsParallelPlugin({
@@ -43,9 +34,8 @@ module.exports = {
       mangle: true,
       compressor: {
         warnings: false,
-        drop_console: true,
+        drop_console: NODE_ENV === 'production',
         drop_debugger: true,
-        keep_fnames: true,
       }
     }),
     new HtmlWebpackPlugin({

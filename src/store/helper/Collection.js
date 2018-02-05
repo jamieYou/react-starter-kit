@@ -1,19 +1,24 @@
-import { StoreHelper, fetchAction, observable, IObservableArray, computed, action } from './helper'
-import type { apiRes } from '@api/cFetch'
+import { computed, action } from 'mobx'
+import type { IObservableArray } from 'mobx/lib/mobx.js.flow'
+import { observables } from './observables'
+import { WebAPIStore } from './WebAPIStore'
+import fetchAction from './fetchAction'
+import type { apiRes } from '@utils'
 import type { meta } from '@model'
 
-export class Collection extends StoreHelper {
-  fetchApi: Object => apiRes
-
-  parameters = {}
-
-  @observable meta: meta = {
+@observables({
+  meta: {
     total: 0,
     page: 1,
     per_page: 10,
-  }
-
-  @observable.shallow data: IObservableArray = []
+  },
+  data: []
+})
+export class Collection extends WebAPIStore {
+  meta: meta
+  data: IObservableArray
+  fetchApi: Object => apiRes
+  parameters: ?Object = null
 
   @fetchAction.bound
   fetchData() {
@@ -22,12 +27,12 @@ export class Collection extends StoreHelper {
 
   @fetchAction.bound
   async fetchMoreData() {
-    const { jsonResult } = await this.fetchApi({
+    const res = await this.fetchApi({
       page: this.meta.page + 1,
       per_page: this.meta.per_page,
       ...this.parameters,
     })
-    const { meta, data } = jsonResult
+    const { meta, data } = res.data
     return {
       meta, data: this.data.concat(data)
     }
@@ -36,7 +41,7 @@ export class Collection extends StoreHelper {
   @fetchAction.bound
   reFetchData() {
     return this.fetchApi({ page: 1, per_page: this.data.length || this.meta.per_page, ...this.parameters })
-      .then(res => ({ data: res.jsonResult.data }))
+      .then(res => ({ data: res.data.data }))
   }
 
   @computed

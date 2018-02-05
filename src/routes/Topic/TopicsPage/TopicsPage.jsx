@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Card } from 'antd-mobile'
 import { Link } from 'react-router-dom'
-import { StoreContext, CustomList } from '@component'
+import { StoreContext, CustomList, Title } from '@component'
 import { TopicsStore, observer } from '@store'
 import type { SimpleTopic } from '@model'
 import './TopicsPage.less'
@@ -30,6 +30,7 @@ export default class TopicsPage extends Component {
   render() {
     return (
       <StoreContext store={this.topicsStore} className="topics-page">
+        <Title value="全部主题"/>
         <CustomList store={this.topicsStore} renderRow={this.renderRow} renderHeader="全部主题"/>
       </StoreContext>
     )

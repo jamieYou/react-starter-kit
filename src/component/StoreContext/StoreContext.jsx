@@ -1,40 +1,40 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { ActivityIndicator, Icon, Result } from 'antd-mobile'
 import _ from 'lodash'
 import { computed } from 'mobx'
 import { observer } from 'mobx-react'
 import { withRouter } from 'react-router-dom'
 import type { htmlNode, location } from '@constants'
-import type { StoreHelper } from '@store'
-import { LocationEvent, autoBind } from '@utils'
+import type { WebAPIStore } from '@store'
+import { autoBind } from '@utils'
 import './StoreContext.less'
 
 @withRouter
 @observer
 export default class StoreContext extends Component {
+  static contextTypes = {
+    onReshow: PropTypes.func
+  }
+
   props: {
     location: location,
     children: htmlNode,
     className?: string,
-    store: StoreHelper | Array<StoreHelper>,
+    store: WebAPIStore | Array<WebAPIStore>,
     loadAction?: Function,
     onReshow?: Function,
   }
 
-  statusFilter = [401, 403, 404]
-
-  locationEvent: LocationEvent | null = do {
-    const { props: { location, onReshow } } = this
-    if (onReshow) {
-      const result = LocationEvent.find(location.key)
-      result.onReshow = onReshow
-      result
-    } else {
-      null
-    }
+  context: {
+    onReshow: (key: string, func: Function) => void
   }
 
+  statusFilter = [401, 403, 404]
+
   componentWillMount() {
+    const { props: { location, onReshow } } = this
+    onReshow && this.context.onReshow(location.key, onReshow)
     this.fetchAction()
   }
 
@@ -62,7 +62,7 @@ export default class StoreContext extends Component {
 
   @computed
   get errMsg() {
-    const store: ?StoreHelper =
+    const store: ?WebAPIStore =
       [].concat(this.props.store).find(item => this.statusFilter.includes(_.get(item.error, 'status')))
     if (store) return store.error.message
     return '似乎出了点问题'

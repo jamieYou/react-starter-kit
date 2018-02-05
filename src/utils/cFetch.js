@@ -2,24 +2,23 @@ import fetch from 'isomorphic-fetch'
 import qs from 'qs'
 import _ from 'lodash'
 import { apiOrigin } from '@constants'
-import { urlConcat } from '@utils'
+import urlConcat from './urlConcat'
 
 async function jsonParse(response) {
   const text = await response.text()
-  return { status: response.status, url: response.url, jsonResult: text ? JSON.parse(text) : {} }
+  response.data = text ? JSON.parse(text) : {}
+  return response
 }
 
-export type responseType = {
-  url: string,
-  status: number,
-  jsonResult: Object | Array
+export interface ResponseType extends Response {
+  data: Object | Array;
 }
 
 export interface ErrorType extends Error {
-  status: number
+  status: number;
 }
 
-export type apiRes = Promise<responseType, ErrorType>
+export type apiRes = Promise<ResponseType, ErrorType>;
 
 export default async function cFetch(pathname, options): apiRes {
   let mergeUrl = urlConcat(apiOrigin, 'api/v1', pathname)
@@ -47,7 +46,7 @@ export default async function cFetch(pathname, options): apiRes {
     return result
   } else {
     // 需要和后端定义错误信息的字段(error_msg)
-    const err = new Error(_.get(result, 'jsonResult.error', '未知错误'))
+    const err = new Error(_.get(result, 'data.error', '未知错误'))
     err.status = result.status
     throw err
   }

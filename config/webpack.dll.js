@@ -4,7 +4,7 @@ const path = require('path')
 const webpack = require('webpack')
 const UglifyJsParallelPlugin = require('webpack-uglify-parallel')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const { postcss, resolve, shareRules, __DEV__, GLOBALS, dllPath, dllContext } = require('./webpack.base.js')
+const { resolve, shareRules, __DEV__, GLOBALS, dllPath, dllContext } = require('./webpack.base.js')
 
 const antdMobileVendor = _.flatten(
   [
@@ -33,13 +33,6 @@ module.exports = {
   resolve,
   devtool: __DEV__ ? 'source-map' : false,
   plugins: [
-    new webpack.LoaderOptionsPlugin({
-      options: {
-        debug: true,
-        noInfo: true,
-        postcss
-      }
-    }),
     new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.htmlnew webpack.HotModuleReplacementPlugin())
     __DEV__ ? { apply: () => null } :
       new UglifyJsParallelPlugin({

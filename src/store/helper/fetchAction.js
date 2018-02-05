@@ -1,4 +1,4 @@
-import type { StoreHelper } from './StoreHelper'
+import type { WebAPIStore } from './WebAPIStore'
 import { action } from 'mobx'
 
 function fetchActionDecorator({ bound = false } = {}) {
@@ -9,7 +9,7 @@ function fetchActionDecorator({ bound = false } = {}) {
     }
 
     descriptor.value = async function result() {
-      const self: StoreHelper = this
+      const self: WebAPIStore = this
       try {
         self.setPendingState(name)
         const res = await oldAction.apply(self, arguments)

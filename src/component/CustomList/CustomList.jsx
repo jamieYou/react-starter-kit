@@ -1,19 +1,35 @@
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
-import { ListView, PullToRefresh } from 'antd-mobile'
+import { ListView, PullToRefresh, ActivityIndicator } from 'antd-mobile'
 import type { IObservableArray } from '@store/helper'
 import type { htmlNode } from '@constants'
-import { observer, computed, Collection, StoreHelper } from '@store'
+import { observer, computed, Collection, WebAPIStore } from '@store'
 import { autoBind } from '@utils'
-import ListFooter from './ListFooter'
 import './CustomList.less'
 
 @observer
 export default class CustomList extends Component {
+  static ListHeader = observer(function ListHeader({ render }) {
+    return render()
+  })
+
+  static ListRow = observer(function ListRow({ rowData, sectionID, rowID, highlightRow, render }) {
+    return render(rowData, sectionID, rowID, highlightRow)
+  })
+
+  static ListFooter = observer(function ListFooter({ store, onRejected }: { store: Collection | WebAPIStore, onRejected: Function }): htmlNode {
+    const isCollection = store instanceof Collection
+    const { isFetching, isRejected, isComplete, isFulfilled } = store
+    if (isCollection ? isComplete : isFulfilled) return <div>没有更多了</div>
+    if (isFetching) return <ActivityIndicator text="加载中..."/>
+    if (isRejected) return <span onClick={onRejected}>重新加载</span>
+    return null
+  })
+
   props: {
     dataList?: IObservableArray | Object<Array>,
-    renderRow: Function,
-    store: Collection | StoreHelper,
+    renderRow: (rowData: Object, sectionID: string, rowID: string, highlightRow: (sectionID: string, rowID: string) => void) => htmlNode,
+    store: Collection | WebAPIStore,
     initialListSize?: number,
     renderHeader?: Function | htmlNode,
     renderSectionHeader?: Function,
@@ -57,6 +73,15 @@ export default class CustomList extends Component {
     }
   }
 
+  @autoBind
+  onRejected() {
+    if (this.isCollection) {
+      this.props.store.fetchMoreData()
+    } else {
+      this.props.store.fetchData()
+    }
+  }
+
   getListViewDom(listView) {
     if (!listView) return
     if (/MicroMessenger/i.test(navigator.userAgent)) {
@@ -75,31 +100,42 @@ export default class CustomList extends Component {
     }
   }
 
-  renderHeader = do {
+  @autoBind
+  renderHeader() {
     const { renderHeader } = this.props
-    if (typeof renderHeader === 'function') renderHeader
-    else if (renderHeader) () => renderHeader
-    else null
+    if (typeof renderHeader === 'function') {
+      const { ListHeader } = this.constructor
+      return <ListHeader render={renderHeader}/>
+    }
+    else return renderHeader
+  }
+
+  @autoBind
+  renderRow(rowData, sectionID, rowID, highlightRow) {
+    const { ListRow } = this.constructor
+    const { renderRow: render } = this.props
+    return <ListRow {...{ rowData, sectionID, rowID, highlightRow, render }}/>
   }
 
   @autoBind
   renderFooter() {
-    return <ListFooter store={this.props.store}/>
+    const { ListFooter } = this.constructor
+    return <ListFooter store={this.props.store} onRejected={this.onRejected}/>
   }
 
   render() {
-    const { initialListSize = 10, renderRow, renderSectionHeader } = this.props
+    const { initialListSize = 10, renderSectionHeader, renderHeader } = this.props
 
     return (
       <ListView
         ref={this.getListViewDom}
         className="custom-list"
-        renderHeader={this.renderHeader}
+        renderHeader={renderHeader ? this.renderHeader : null}
         renderSectionHeader={renderSectionHeader}
-        renderRow={renderRow}
+        renderRow={this.renderRow}
         renderFooter={this.renderFooter}
         dataSource={this.dataSourceResult}
-        initialListSize={this.isCollection ? initialListSize : void 0}
+        initialListSize={initialListSize}
         pageSize={10}
         onEndReached={this.isCollection ? this.onEndReached : null}
         onEndReachedThreshold={200}
