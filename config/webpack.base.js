@@ -17,13 +17,6 @@ exports.GLOBALS = {
   'process.env.__DEV__': __DEV__,
 }
 
-exports.postcss = () =>
-  [pxtorem({
-    rootValue: 50,
-    propWhiteList: [],
-    minPixelValue: 2,
-  }), autoprefixer]
-
 exports.resolve = {
   modules: [path.join(__dirname, '../node_modules')],
   alias: {
@@ -42,6 +35,19 @@ exports.resolve = {
 }
 
 const lessLoaderOptinos = `less-loader?{"modifyVars":${JSON.stringify(require('./theme'))}}`
+const postcssLoaderOptinos = {
+  loader: 'postcss-loader',
+  options: {
+    plugins: [
+      pxtorem({
+        rootValue: 50,
+        propWhiteList: [],
+        minPixelValue: 2,
+      }),
+      autoprefixer()
+    ]
+  }
+}
 
 exports.shareRules = [
   {
@@ -63,9 +69,9 @@ exports.shareRules = [
   {
     test: /(\.css|\.less)$/,
     use: __DEV__
-      ? ['style-loader', 'css-loader?sourceMap', 'postcss-loader', lessLoaderOptinos]
+      ? ['style-loader', 'css-loader?sourceMap', postcssLoaderOptinos, lessLoaderOptinos]
       : ExtractTextPlugin.extract({
-        use: ['css-loader?minimize', 'postcss-loader', lessLoaderOptinos]
+        use: ['css-loader?minimize', postcssLoaderOptinos, lessLoaderOptinos]
       })
   },
 ]

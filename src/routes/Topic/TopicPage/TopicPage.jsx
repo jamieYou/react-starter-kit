@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card } from 'antd-mobile'
-import { StoreContext, CustomList, parameterParser } from '@component'
+import { StoreContext, CustomList, parameterParser, Title } from '@component'
 import { TopicStore, observer } from '@store'
 import { autoBind } from '@utils'
 import type { Reply } from '@model'
@@ -50,6 +50,7 @@ export default class TopicPage extends Component {
   render() {
     return (
       <StoreContext store={this.topicStore} className="topic-page">
+        <Title value={this.topicStore.title}/>
         <CustomList
           store={this.topicStore}
           renderHeader={this.renderHeader}

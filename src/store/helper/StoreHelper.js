@@ -1,6 +1,4 @@
-import { action, observable, toJS, useStrict } from 'mobx'
-import _ from 'lodash'
-import type { ErrorType } from '@api/cFetch'
+import { action, observable, useStrict } from 'mobx'
 
 useStrict(true)
 
@@ -14,26 +12,26 @@ export class StoreHelper<instanceKey: string> {
     return this._instanceList
   }
 
-  static create(instanceKey, initialState) {
+  static create(instanceKey, newState) {
     const store = new this(instanceKey)
-    initialState && store.setInitialState(initialState)
+    newState && store.setState(newState)
     return store
   }
 
-  static findOrCreate(instanceKey, initialState) {
+  static findOrCreate(instanceKey, newState) {
     instanceKey = this.checkKey(instanceKey)
     if (!this.instanceList.has(instanceKey)) {
-      this.instanceList.set(instanceKey, this.create(instanceKey, initialState))
+      this.instanceList.set(instanceKey, this.create(instanceKey, newState))
     }
     return this.instanceList.get(instanceKey)
   }
 
-  static createOrUpdate(instanceKey, initialState) {
+  static createOrUpdate(instanceKey, newState) {
     instanceKey = this.checkKey(instanceKey)
     if (!this.instanceList.has(instanceKey)) {
-      this.instanceList.set(instanceKey, this.create(instanceKey, initialState))
+      this.instanceList.set(instanceKey, this.create(instanceKey, newState))
     } else {
-      initialState && this.instanceList.get(instanceKey).setInitialState(initialState)
+      newState && this.instanceList.get(instanceKey).setState(newState)
     }
     return this.instanceList.get(instanceKey)
   }
@@ -46,60 +44,13 @@ export class StoreHelper<instanceKey: string> {
   }
 
   instanceKey: string
-  @observable isFetching = false
-  @observable isRejected = false
-  @observable isFulfilled = false
-  @observable error: ErrorType | null = null
-
-  fetchData: Function
 
   constructor(instanceKey = 'only') {
     this.instanceKey = instanceKey
   }
 
   @action
-  setInitialState(initialState) {
-    Object.assign(this, initialState)
-  }
-
-  @action
-  setPendingState(actionName) {
-    this.isFetching = true
-    console.log("%cpending  ", "color:blue", this.logMessage(actionName))
-  }
-
-  @action
-  setFulfilledState(response: {} | Function, actionName) {
-    if (this.isFetching) {
-      const newState = typeof response === 'function' ? null : _.get(response, 'jsonResult', response)
-      Object.assign(this, {
-        isFetching: false,
-        isRejected: false,
-        isFulfilled: true,
-        error: null,
-      }, newState)
-      typeof response === 'function' && response()
-    }
-    console.log("%cfulfilled", "color:green", this.logMessage(actionName))
-  }
-
-  @action
-  setRejectedState(error, actionName) {
-    const nextState = {
-      error,
-      isFetching: false,
-      isRejected: true,
-    }
-    Object.assign(this, nextState)
-    console.log("%crejected", "color:red", this.logMessage(actionName))
-  }
-
-  logMessage(actionName) {
-    return {
-      store: this.constructor.name,
-      instanceKey: this.instanceKey,
-      action: actionName,
-      state: toJS(this)
-    }
+  setState(newState) {
+    Object.assign(this, newState)
   }
 }

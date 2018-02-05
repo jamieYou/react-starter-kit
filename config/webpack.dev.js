@@ -3,7 +3,7 @@ const IPv4 = require('ipv4')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
-const { postcss, resolve, shareRules, GLOBALS, srcPath, dllPath, viewPath, dllContext } = require('./webpack.base.js')
+const { resolve, shareRules, GLOBALS, srcPath, dllPath, viewPath, dllContext } = require('./webpack.base.js')
 
 const publicPath = `http://${IPv4}:${process.env.PORT || '8000'}/`
 
@@ -29,13 +29,6 @@ module.exports = {
     new webpack.DllReferencePlugin({
       context: dllContext,
       manifest: require(path.join(dllPath, 'vendor-manifest.json'))
-    }),
-    new webpack.LoaderOptionsPlugin({
-      options: {
-        debug: true,
-        noInfo: true,
-        postcss
-      }
     }),
     new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.htmlnew webpack.HotModuleReplacementPlugin())
     new webpack.HotModuleReplacementPlugin(),

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Switch } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import ViewModal from './ViewModal'
-import { LocationEvent } from '@utils'
+import { autoBind } from '@utils'
 import type { htmlNode, location, history, match } from '@constants'
 
 type propsType = {
@@ -13,16 +14,26 @@ type propsType = {
 }
 
 export default class ViewController extends Component {
+  static childContextTypes = {
+    onReshow: PropTypes.func
+  }
+
   props: propsType
 
   locationList: Map<string, location>
+
+  reshowList: Map<location.key, Function[]> = new Map()
 
   constructor(props) {
     super(props)
     const { location } = this.props
     this.locationList = new Map([
-      [location.key, this.formatLocation(location.key, location)]
+      [location.key, location]
     ])
+  }
+
+  getChildContext() {
+    return { onReshow: this.onReshowPage }
   }
 
   componentWillReceiveProps(nextProps: propsType) {
@@ -35,30 +46,39 @@ export default class ViewController extends Component {
     else if (action === 'POP') {
       const nextKey = nextLocation.key
       this.removeLocation(location.key)
-      LocationEvent.destroy(location.key)
+      this.unReshowPage(location.key)
 
       if (!this.locationList.has(nextKey)) {
         this.addLocation(nextKey, nextLocation)
       } else {
-        LocationEvent.tryReshowPage(nextKey)
+        this.tryReshowPage(nextKey)
       }
     }
 
     else if (action === 'REPLACE') {
-      if (nextLocation.state && nextLocation.state.modalKey) {
-        this.resetLocation(nextLocation.state.modalKey, nextLocation)
-      } else {
-        this.replaceLocation(location.key, nextLocation.key, nextLocation)
-      }
+      this.replaceLocation(location.key, nextLocation.key, nextLocation)
+      this.unReshowPage(location.key)
     }
   }
 
-  formatLocation(modalKey, location: location) {
-    return Object.assign(location, { modalKey })
+  @autoBind
+  onReshowPage(key, func) {
+    const funcList = this.reshowList.get(key) || []
+    funcList.push(func)
+    this.reshowList.set(key, funcList)
+  }
+
+  tryReshowPage(key) {
+    const funcList = this.reshowList.get(key)
+    funcList && funcList.forEach(func => func())
+  }
+
+  unReshowPage(key) {
+    this.reshowList.delete(key)
   }
 
   addLocation(key, nextLocation) {
-    this.locationList.set(key, this.formatLocation(key, nextLocation))
+    this.locationList.set(key, nextLocation)
   }
 
   removeLocation(key) {
@@ -66,7 +86,7 @@ export default class ViewController extends Component {
   }
 
   resetLocation(key, nextLocation) {
-    this.locationList.set(key, this.formatLocation(key, nextLocation))
+    this.locationList.set(key, nextLocation)
   }
 
   replaceLocation(key, nextKey, nextLocation) {

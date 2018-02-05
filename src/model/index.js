@@ -6,9 +6,9 @@ interface Model {
 }
 
 export type meta = {
-  total?: number,
-  page?: number,
-  per_page?: number,
+  total: number,
+  page: number,
+  per_page: number,
 }
 
 export interface SimpleTopic extends Model {
@@ -17,12 +17,11 @@ export interface SimpleTopic extends Model {
   title: string;
   tab: string;
   content: string;
-  title: string;
   good: boolean;
   top: boolean;
   last_reply_at: string;
-  reply_count: string;
-  visit_count: string;
+  reply_count: number;
+  visit_count: number;
   author: {
     avatar_url: string,
     loginname: string,

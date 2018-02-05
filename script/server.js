@@ -14,7 +14,6 @@ const proxyTarget = 'https://cnodejs.org' || `http://${ipv4}:3000`
 const rootPath = path.join(__dirname, '../')
 
 app.set('views', path.join(rootPath, 'views'))
-app.set('view engine', 'jade')
 app.use(logger('dev'))
 
 app.use(compression({
@@ -58,26 +57,15 @@ if (_DEV_) {
   app.use('/', (req, res) => res.sendfile('dist/index.html'))
 }
 
-
-// catch 404 and forward to error handler
 app.use(function (req, res, next) {
   const err = new Error('Not Found')
   err.status = 404
   next(err)
 })
 
-// error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
-
-  // render the error page
   res.status(err.status || 500)
-  res.render('error', {
-    message: err.message,
-    error: {}
-  })
+  res.json(err)
 })
 
 app.listen(port, () => {
