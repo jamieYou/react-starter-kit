@@ -1,4 +1,4 @@
-import { action, observable, toJS } from 'mobx'
+import { action, observable, toJS, autorun } from 'mobx'
 import { StoreHelper } from './StoreHelper'
 import type { ErrorType, ResponseType } from '@utils'
 
@@ -17,20 +17,18 @@ export class WebAPIStore<instanceKey: string> extends StoreHelper {
 
   @action
   setFulfilledState(response: ResponseType | Function | Object, actionName) {
-    if (this.isFetching) {
-      const newState = do {
-        if (typeof response === 'function') null
-        else if (response instanceof window.Response) response.data
-        else response
-      }
-      Object.assign(this, {
-        isFetching: false,
-        isRejected: false,
-        isFulfilled: true,
-        error: null,
-      }, newState)
-      typeof response === 'function' && response()
+    const newState = do {
+      if (typeof response === 'function') null
+      else if (response instanceof window.Response) response.data
+      else response
     }
+    Object.assign(this, {
+      isFetching: false,
+      isRejected: false,
+      isFulfilled: true,
+      error: null,
+    }, newState)
+    typeof response === 'function' && response()
     console.log("%cfulfilled", "color:green", this.logMessage(actionName))
   }
 
@@ -43,6 +41,19 @@ export class WebAPIStore<instanceKey: string> extends StoreHelper {
     }
     Object.assign(this, nextState)
     console.log("%crejected", "color:red", this.logMessage(actionName))
+  }
+
+  listenFetchAction(): Promise {
+    if (!this.isFetching) return Promise.resolve()
+    return new Promise((resolve, reject) => {
+      const disposer = autorun(() => {
+        if (!this.isFetching) {
+          disposer()
+          if (this.isRejected) reject(this.error)
+          else resolve()
+        }
+      })
+    })
   }
 
   logMessage(actionName) {

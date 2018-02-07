@@ -23,7 +23,6 @@ exports.resolve = {
     '@store': path.join(srcPath, "store"),
     '@model': path.join(srcPath, "model"),
     '@component': path.join(srcPath, "component"),
-    '@api': path.join(srcPath, "api"),
     '@utils': path.join(srcPath, "utils"),
     '@constants': path.join(srcPath, "constants"),
     '@image': path.join(srcPath, "image"),
@@ -32,6 +31,18 @@ exports.resolve = {
     mobx: 'mobx/lib/mobx.module.js',
   },
   extensions: ['.js', '.jsx']
+}
+
+exports.devtool = __DEV__ ? 'cheap-module-eval-source-map' : "cheap-module-source-map"
+
+exports.stats = {
+  colors: true,
+  hash: true,
+  version: true,
+  children: false,
+  chunks: false,
+  modules: false,
+  chunkModules: false,
 }
 
 const lessLoaderOptinos = `less-loader?{"modifyVars":${JSON.stringify(require('./theme'))}}`

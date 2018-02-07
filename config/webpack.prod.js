@@ -5,14 +5,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsParallelPlugin = require('webpack-uglify-parallel')
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
-const { resolve, shareRules, GLOBALS, srcPath, dllPath, distPath, viewPath, dllContext, NODE_ENV } = require('./webpack.base.js')
+const { resolve, shareRules, GLOBALS, srcPath, dllPath, distPath, viewPath, dllContext, NODE_ENV, devtool, stats } = require('./webpack.base.js')
 
 module.exports = {
   context: srcPath,
   entry: {
-    index: [
-      './index'
-    ]
+    main: './index'
   },
   output: {
     path: distPath,
@@ -21,7 +19,7 @@ module.exports = {
     chunkFilename: '[name].[chunkhash:5].chunk.js',
   },
   resolve,
-  devtool: false,
+  devtool,
   plugins: [
     new webpack.DllReferencePlugin({
       context: dllContext,
@@ -42,11 +40,10 @@ module.exports = {
       template: path.join(viewPath, "template.html"),
       filename: path.join(distPath, "index.html"),
       inject: true,
-      chunks: ['index'],
     }),
     new AddAssetHtmlPlugin([
-      { filepath: path.join(dllPath, "vendor.min.js"), hash: true, includeSourcemap: false },
-      { filepath: path.join(dllPath, "vendor.min.css"), hash: true, includeSourcemap: false, typeOfAsset: 'css' }
+      { filepath: path.join(dllPath, "vendor.min.js"), hash: true, includeSourcemap: true },
+      { filepath: path.join(dllPath, "vendor.min.css"), hash: true, includeSourcemap: true, typeOfAsset: 'css' }
     ]),
     new ExtractTextPlugin({
       filename: 'app.[name].[contenthash].css',
@@ -54,8 +51,7 @@ module.exports = {
     }),
   ],
   module: {
-    rules: [
-      ...shareRules,
-    ]
-  }
+    rules: shareRules
+  },
+  stats,
 }
