@@ -4,13 +4,15 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsParallelPlugin = require('webpack-uglify-parallel')
-const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
-const { resolve, shareRules, GLOBALS, srcPath, dllPath, distPath, viewPath, dllContext, NODE_ENV, devtool, stats } = require('./webpack.base.js')
+const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin')
+const { vendor } = require('./vendor.config.js')
+const { resolve, shareRules, GLOBALS, srcPath, distPath, viewPath, NODE_ENV, stats } = require('./webpack.base.js')
 
 module.exports = {
   context: srcPath,
   entry: {
-    main: './index'
+    main: './index',
+    vendor,
   },
   output: {
     path: distPath,
@@ -19,14 +21,10 @@ module.exports = {
     chunkFilename: '[name].[chunkhash:5].chunk.js',
   },
   resolve,
-  devtool,
+  devtool: "cheap-module-source-map",
   plugins: [
-    new webpack.DllReferencePlugin({
-      context: dllContext,
-      manifest: require(path.join(dllPath, 'vendor-manifest.min.json')),
-    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.htmlnew webpack.HotModuleReplacementPlugin())
+    new webpack.DefinePlugin(GLOBALS),
     new UglifyJsParallelPlugin({
       workers: os.cpus().length,
       mangle: true,
@@ -41,10 +39,19 @@ module.exports = {
       filename: path.join(distPath, "index.html"),
       inject: true,
     }),
-    new AddAssetHtmlPlugin([
-      { filepath: path.join(dllPath, "vendor.min.js"), hash: true, includeSourcemap: true },
-      { filepath: path.join(dllPath, "vendor.min.css"), hash: true, includeSourcemap: true, typeOfAsset: 'css' }
-    ]),
+    new webpack.HashedModuleIdsPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      filename: 'manifest.js',
+      minChunks: Infinity,
+    }),
+    new InlineManifestWebpackPlugin({
+      name: 'webpackManifest'
+    }),
     new ExtractTextPlugin({
       filename: 'app.[name].[contenthash].css',
       allChunks: true

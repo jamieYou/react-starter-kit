@@ -4,7 +4,7 @@ import { ListView, PullToRefresh, ActivityIndicator } from 'antd-mobile'
 import type { IObservableArray } from '@store/helper'
 import type { htmlNode } from '@constants'
 import { observer, computed, Collection, WebAPIStore } from '@store'
-import { autoBind } from '@utils'
+import { autoBind, md } from '@utils'
 import './CustomList.less'
 
 @observer
@@ -84,7 +84,7 @@ export default class CustomList extends Component {
 
   getListViewDom(listView) {
     if (!listView) return
-    if (/MicroMessenger/i.test(navigator.userAgent)) {
+    if (md.match('MicroMessenger')) {
       const scrollView = findDOMNode(listView)
       let startY = 0
       scrollView.addEventListener('touchstart', (e) => {

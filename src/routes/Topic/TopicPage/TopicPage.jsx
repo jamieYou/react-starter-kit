@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card } from 'antd-mobile'
-import { StoreContext, CustomList, parameterParser, Title } from '@component'
+import { StoreContext, CustomList, parameterParser, Title, InnerHtml } from '@component'
 import { TopicStore, observer } from '@store'
 import { autoBind } from '@utils'
 import type { Reply } from '@model'
@@ -27,7 +27,7 @@ export default class TopicPage extends Component {
           thumb={author.avatar_url}
         />
         <Card.Body>
-          <div className="markdown-body" dangerouslySetInnerHTML={{ __html: content }}/>
+          <InnerHtml html={content}/>
         </Card.Body>
       </Card>
     )

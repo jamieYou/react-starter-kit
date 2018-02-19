@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import type { htmlNode, location } from '@constants'
+import { md } from '@utils'
 
 export default class ViewModal extends Component {
   props: {
@@ -14,7 +15,7 @@ export default class ViewModal extends Component {
   }
 
   render() {
-    const overflow = /(Android | wechatdevtools)/i.test(navigator.userAgent) ? 'auto' : void 0
+    const overflow = md.match(/(Android | wechatdevtools)/i) ? 'auto' : void 0
     return (
       <div id={this.props.id} className="view-modal" style={{ display: this.props.display, overflow }}>
         {this.props.children}

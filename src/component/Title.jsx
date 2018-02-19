@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { md } from '@utils'
 import type { location } from '@constants'
 
 @withRouter
@@ -23,7 +24,7 @@ export default class Title extends Component {
   setTitle() {
     const { value = 'A100' } = this.props
     document.title = value
-    if (/iPhone/i.test(navigator.userAgent)) {
+    if (md.is('iPhone')) {
       const iframe: HTMLIFrameElement = document.createElement("iframe")
       iframe.style.display = "none"
       iframe.setAttribute("src", "about:blank")

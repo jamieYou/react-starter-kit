@@ -2,8 +2,7 @@ const path = require('path')
 const IPv4 = require('ipv4')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
-const { resolve, shareRules, GLOBALS, srcPath, dllPath, viewPath, dllContext, devtool, stats } = require('./webpack.base.js')
+const { resolve, shareRules, GLOBALS, srcPath, viewPath, stats } = require('./webpack.base.js')
 
 const publicPath = `http://${IPv4}:${process.env.PORT || '8000'}/`
 
@@ -16,7 +15,7 @@ module.exports = {
       'react-hot-loader/patch',
       'webpack-hot-middleware/client?reload=true',
       './index'
-    ]
+    ],
   },
   output: {
     publicPath,
@@ -24,13 +23,9 @@ module.exports = {
     chunkFilename: '[name].chunk.js',
   },
   resolve,
-  devtool,
+  devtool: 'cheap-module-eval-source-map',
   plugins: [
-    new webpack.DllReferencePlugin({
-      context: dllContext,
-      manifest: require(path.join(dllPath, 'vendor-manifest.json'))
-    }),
-    new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.htmlnew webpack.HotModuleReplacementPlugin())
+    new webpack.DefinePlugin(GLOBALS),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
@@ -38,9 +33,6 @@ module.exports = {
       filename: 'index.html',
       inject: true,
     }),
-    new AddAssetHtmlPlugin([
-      { filepath: path.join(dllPath, "vendor.js"), includeSourcemap: false }
-    ]),
   ],
   module: {
     rules: shareRules
