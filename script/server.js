@@ -1,5 +1,5 @@
-const express = require('express')
 const path = require('path')
+const express = require('express')
 const logger = require('morgan')
 const proxy = require('http-proxy-middleware')
 const _ = require('lodash')
@@ -11,21 +11,17 @@ const _DEV_ = _.get(process.env, 'NODE_ENV', 'development') === 'development'
 const port = process.env.PORT || 8000
 const publicPath = _DEV_ ? 'src' : 'dist'
 const proxyTarget = 'https://cnodejs.org' || `http://${ipv4}:3000`
-const rootPath = path.join(__dirname, '../')
 
-app.set('views', path.join(rootPath, 'views'))
 app.use(logger('dev'))
 
 app.use(compression({
   filter: (req, res) => {
-    if (req.headers['x-no-compression']) {
-      return false
-    }
+    if (req.headers['x-no-compression']) return false
     return compression.filter(req, res)
   }
 }))
 
-app.use(express.static(path.join(rootPath, publicPath)))
+app.use(express.static(path.resolve(publicPath), { maxAge: _DEV_ ? 0 : '1y' }))
 app.use('/api/v1', proxy({ target: proxyTarget, changeOrigin: true }))
 
 if (_DEV_) {
@@ -48,20 +44,13 @@ if (_DEV_) {
 
   app.use('/', (req, res) => {
     const filename = path.join(bundler.outputPath, 'index.html')
-    const result = bundler.outputFileSystem.readFileSync(filename)
-    res.set('content-type', 'text/html')
+    const result = bundler.outputFileSystem.readFileSync(filename, 'utf-8')
     res.send(result)
     res.end()
   })
 } else {
-  app.use('/', (req, res) => res.sendfile('dist/index.html'))
+  app.use('/', (req, res) => res.sendfile(`${publicPath}/index.html`))
 }
-
-app.use(function (req, res, next) {
-  const err = new Error('Not Found')
-  err.status = 404
-  next(err)
-})
 
 app.use(function (err, req, res, next) {
   res.status(err.status || 500)

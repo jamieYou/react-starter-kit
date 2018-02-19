@@ -5,8 +5,8 @@
   "homepage": "https://github.com/jamieYou/react-mobx-starter-kit",
   "scripts": {
     "start": "npm-run-all --parallel server:dev lint:watch",
-    "staging": "npm-run-all remove-dist lint vendor:prod create:dist:staging",
-    "build": "npm-run-all remove-dist lint vendor:prod create:dist",
+    "staging": "npm-run-all remove-dist lint create:dist:staging remove-manifest",
+    "build": "npm-run-all remove-dist lint create:dist remove-manifest",
     "start:prod": "npm-run-all build server:prod",
     "server:dev": "nodemon ./script/server.js --watch script --watch config",
     "server:prod": "cross-env NODE_ENV=production node ./script/server.js",
@@ -15,8 +15,7 @@
     "lint": "esw src --ext .jsx --ext .js",
     "lint:watch": "npm run lint -- --watch",
     "remove-dist": "rimraf ./dist",
-    "vendor": "webpack --config ./config/webpack.dll.js --progress",
-    "vendor:prod": "cross-env NODE_ENV=production webpack --config ./config/webpack.dll.js --progress"
+    "remove-manifest": "rimraf ./dist/manifest.js ./dist/manifest.js.map"
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "^2.0.1",
@@ -48,6 +47,7 @@
     "file-loader": "^0.11.1",
     "html-webpack-plugin": "^2.28.0",
     "http-proxy-middleware": "^0.17.4",
+    "inline-manifest-webpack-plugin": "^3.0.1",
     "ipv4": "^1.0.0",
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
@@ -74,8 +74,10 @@
     "antd-mobile": "^2.1.6",
     "core-decorators": "^0.20.0",
     "fastclick": "^1.0.6",
+    "github-markdown-css": "^2.10.0",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
+    "mobile-detect": "^1.4.1",
     "mobx": "^3.4.1",
     "mobx-logger": "^0.6.0",
     "mobx-react": "^4.3.5",

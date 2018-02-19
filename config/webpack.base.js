@@ -7,10 +7,8 @@ const NODE_ENV = exports.NODE_ENV = process.env.NODE_ENV || 'development'
 const __DEV__ = exports.__DEV__ = NODE_ENV === 'development' || NODE_ENV === 'test'
 
 const srcPath = exports.srcPath = path.join(__dirname, "../src")
-exports.dllPath = path.join(__dirname, "../dll")
 exports.distPath = path.join(__dirname, "../dist")
 exports.viewPath = path.join(__dirname, "../views")
-exports.dllContext = path.join(__dirname, "../")
 
 exports.GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
@@ -32,8 +30,6 @@ exports.resolve = {
   },
   extensions: ['.js', '.jsx']
 }
-
-exports.devtool = __DEV__ ? 'cheap-module-eval-source-map' : "cheap-module-source-map"
 
 exports.stats = {
   colors: true,
