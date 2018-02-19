@@ -3,7 +3,7 @@ const IPv4 = require('ipv4')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
-const { resolve, shareRules, GLOBALS, srcPath, dllPath, viewPath, dllContext } = require('./webpack.base.js')
+const { resolve, shareRules, GLOBALS, srcPath, dllPath, viewPath, dllContext, devtool, stats } = require('./webpack.base.js')
 
 const publicPath = `http://${IPv4}:${process.env.PORT || '8000'}/`
 
@@ -12,7 +12,7 @@ console.warn(publicPath)
 module.exports = {
   context: srcPath,
   entry: {
-    index: [
+    main: [
       'react-hot-loader/patch',
       'webpack-hot-middleware/client?reload=true',
       './index'
@@ -24,7 +24,7 @@ module.exports = {
     chunkFilename: '[name].chunk.js',
   },
   resolve,
-  devtool: 'cheap-module-eval-source-map', // more info:https://webpack.github.io/docs/build-performance.html#sourcemaps and https://webpack.github.io/docs/configuration.html#devtool
+  devtool,
   plugins: [
     new webpack.DllReferencePlugin({
       context: dllContext,
@@ -36,15 +36,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(viewPath, "template.html"),
       filename: 'index.html',
-      inject: true
+      inject: true,
     }),
-    new AddAssetHtmlPlugin({
-      filepath: path.join(dllPath, "vendor.js"),
-    }),
+    new AddAssetHtmlPlugin([
+      { filepath: path.join(dllPath, "vendor.js"), includeSourcemap: false }
+    ]),
   ],
   module: {
-    rules: [
-      ...shareRules,
-    ]
-  }
+    rules: shareRules
+  },
+  stats,
 }

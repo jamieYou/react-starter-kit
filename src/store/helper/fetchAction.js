@@ -10,6 +10,7 @@ function fetchActionDecorator({ bound = false } = {}) {
 
     descriptor.value = async function result() {
       const self: WebAPIStore = this
+      if (self.isFetching) return this.listenFetchAction()
       try {
         self.setPendingState(name)
         const res = await oldAction.apply(self, arguments)

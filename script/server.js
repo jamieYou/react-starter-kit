@@ -37,8 +37,8 @@ if (_DEV_) {
   const bundler = webpack(config)
 
   app.use(webpackDevMiddleware(bundler, {
+    stats: config.stats,
     publicPath: config.output.publicPath,
-    stats: { colors: true }
   }))
 
   app.use(webpackHotMiddleware(bundler, {

@@ -4,11 +4,11 @@ const path = require('path')
 const webpack = require('webpack')
 const UglifyJsParallelPlugin = require('webpack-uglify-parallel')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const { resolve, shareRules, __DEV__, GLOBALS, dllPath, dllContext } = require('./webpack.base.js')
+const { resolve, shareRules, __DEV__, GLOBALS, dllPath, dllContext, devtool, stats } = require('./webpack.base.js')
 
 const antdMobileVendor = _.flatten(
   [
-    'button', 'list', 'activity-indicator', 'toast',
+    'button', 'list', 'activity-indicator', 'toast', 'result',
     'list-view', 'pull-to-refresh', 'icon', 'modal',
   ].map(component => {
     return [`antd-mobile/lib/${component}/index.js`, `antd-mobile/lib/${component}/style`]
@@ -18,8 +18,9 @@ const antdMobileVendor = _.flatten(
 const vendor = [
   'react', 'react-dom', 'prop-types', 'mobx', 'mobx-react', 'qs', 'react-router', 'react-router-dom',
   'isomorphic-fetch', 'fastclick',
-  ...antdMobileVendor
 ]
+
+!__DEV__ && vendor.push(...antdMobileVendor)
 
 module.exports = {
   entry: {
@@ -31,7 +32,7 @@ module.exports = {
     library: '[name]_library',
   },
   resolve,
-  devtool: __DEV__ ? 'source-map' : false,
+  devtool,
   plugins: [
     new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.htmlnew webpack.HotModuleReplacementPlugin())
     __DEV__ ? { apply: () => null } :
@@ -55,8 +56,7 @@ module.exports = {
     }),
   ],
   module: {
-    rules: [
-      ...shareRules
-    ]
-  }
+    rules: shareRules
+  },
+  stats,
 }

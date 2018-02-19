@@ -21,8 +21,12 @@ export class Collection extends WebAPIStore {
   parameters: ?Object = null
 
   @fetchAction.bound
-  fetchData() {
-    return this.fetchApi({ page: 1, per_page: this.meta.per_page, ...this.parameters })
+  async fetchData() {
+    const res = await this.fetchApi({ page: 1, per_page: this.meta.per_page, ...this.parameters })
+    const { meta, data } = res.data
+    return {
+      meta, data: this.formatData(data)
+    }
   }
 
   @fetchAction.bound
@@ -34,24 +38,28 @@ export class Collection extends WebAPIStore {
     })
     const { meta, data } = res.data
     return {
-      meta, data: this.data.concat(data)
+      meta, data: this.data.concat(this.formatData(data))
     }
   }
 
   @fetchAction.bound
   reFetchData() {
     return this.fetchApi({ page: 1, per_page: this.data.length || this.meta.per_page, ...this.parameters })
-      .then(res => ({ data: res.data.data }))
+      .then(res => ({ data: this.formatData(res.data.data) }))
   }
 
-  @computed
-  get isComplete() {
-    return this.isFulfilled && this.data.length >= this.meta.total
+  formatData(data: []): data {
+    return data
   }
 
   @action.bound
   resetData() {
     this.isFulfilled = false
     this.data.clear()
+  }
+
+  @computed
+  get isComplete() {
+    return this.isFulfilled && this.data.length >= this.meta.total
   }
 }
