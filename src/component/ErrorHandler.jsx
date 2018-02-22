@@ -4,7 +4,7 @@ import { htmlNode } from '@constants'
 export default class ErrorHandler extends Component {
   props: {
     children: htmlNode,
-    onError?: Error => void,
+    onError?: Error => any,
   }
 
   componentDidCatch(error) {

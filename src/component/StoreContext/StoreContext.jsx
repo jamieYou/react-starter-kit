@@ -22,7 +22,7 @@ export default class StoreContext extends Component {
     children: htmlNode,
     className?: string,
     store: WebAPIStore | Array<WebAPIStore>,
-    loadAction?: Function,
+    onLoad?: Function,
     onReshow?: Function,
   }
 
@@ -32,6 +32,8 @@ export default class StoreContext extends Component {
 
   statusFilter = [401, 403, 404]
 
+  stores = [].concat(this.props.store)
+
   componentWillMount() {
     const { props: { location, onReshow } } = this
     onReshow && this.context.onReshow(location.key, onReshow)
@@ -40,30 +42,29 @@ export default class StoreContext extends Component {
 
   @autoBind
   fetchAction() {
-    const { loadAction, store } = this.props
-    if (loadAction) return loadAction()
-    return Promise.all([].concat(store).map(item => item.fetchData()))
+    const { onLoad } = this.props
+    if (onLoad) return onLoad()
+    return Promise.all(this.stores.map(item => item.fetchData()))
   }
 
   @computed
   get isFetching() {
-    return !![].concat(this.props.store).find(item => item.isFetching)
+    return !!this.stores.find(item => item.isFetching)
   }
 
   @computed
   get isFulfilled() {
-    return [].concat(this.props.store).reduce((pre, item) => pre && item.isFulfilled, true)
+    return this.stores.reduce((pre, item) => pre && item.isFulfilled, true)
   }
 
   @computed
   get isRejected() {
-    return !![].concat(this.props.store).find(item => item.isRejected)
+    return !!this.stores.find(item => item.isRejected)
   }
 
   @computed
   get errMsg() {
-    const store: ?WebAPIStore =
-      [].concat(this.props.store).find(item => this.statusFilter.includes(_.get(item.error, 'status')))
+    const store: ?WebAPIStore = this.stores.find(item => this.statusFilter.includes(_.get(item.error, 'status')))
     if (store) return store.error.message
     return '似乎出了点问题'
   }
