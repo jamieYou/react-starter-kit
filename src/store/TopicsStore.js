@@ -1,5 +1,5 @@
 import { IObservableArray, Collection } from './helper'
-import type { SimpleTopic } from '@model'
+import type { Topic } from '@model'
 import { cFetch } from '@utils'
 
 export class TopicsStore extends Collection {
@@ -16,7 +16,7 @@ export class TopicsStore extends Collection {
     per_page: 20,
   }
 
-  data: IObservableArray<SimpleTopic>
+  data: IObservableArray<Topic>
 
   async fetchApi(params) {
     params.limit = params.per_page

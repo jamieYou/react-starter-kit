@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
 import { Card } from 'antd-mobile'
-import { StoreContext, CustomList, parameterParser, Title, InnerHtml } from '@component'
+import { StoreContext, CustomList, paramsParser, Title, InnerHtml } from '@component'
 import { TopicStore, observer } from '@store'
 import { autoBind } from '@utils'
 import type { Reply } from '@model'
 import './TopicPage.less'
 
-@parameterParser
+@paramsParser
 @observer
 export default class TopicPage extends Component {
   props: {
-    parameters: {
+    params: {
       id: string
     }
   }
 
-  topicStore: TopicStore = TopicStore.findOrCreate(this.props.parameters.id)
+  topicStore: TopicStore = TopicStore.findOrCreate(this.props.params.id)
 
   @autoBind
   renderHeader() {
