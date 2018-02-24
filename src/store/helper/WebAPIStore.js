@@ -1,6 +1,6 @@
 import { action, observable, toJS, autorun } from 'mobx'
 import { StoreHelper } from './StoreHelper'
-import type { ErrorType, ResponseType } from '@utils'
+import type { ErrorType, CResponse } from '@utils'
 
 export class WebAPIStore<instanceKey: string> extends StoreHelper {
   fetchData: Function
@@ -16,7 +16,7 @@ export class WebAPIStore<instanceKey: string> extends StoreHelper {
   }
 
   @action
-  setFulfilledState(response: ResponseType | Function | Object, actionName) {
+  setFulfilledState(response: CResponse | Function | Object, actionName) {
     const newState = do {
       if (typeof response === 'function') null
       else if (response instanceof window.Response) response.data
