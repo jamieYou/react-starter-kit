@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import "github-markdown-css"
 
-export default class InnerHtml extends Component {
+export default class InnerHTML extends Component {
   props: {
     html: string,
     className?: string,

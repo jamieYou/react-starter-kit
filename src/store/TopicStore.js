@@ -1,6 +1,6 @@
 import { observables, WebAPIStore, fetchAction } from './helper'
 import type { Topic } from '@model'
-import { cFetch } from '@utils'
+import { CRequest } from '@utils'
 
 @observables({
   create_at: "",
@@ -25,6 +25,6 @@ export class TopicStore extends WebAPIStore implements Topic {
 
   @fetchAction.bound
   fetchData() {
-    return cFetch(`topic/${this.id}`).then(res => res.data.data)
+    return CRequest.get('topic/{id}').params({ id: this.id }).then(res => res.data.data)
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card } from 'antd-mobile'
-import { StoreContext, CustomList, paramsParser, Title, InnerHtml } from '@component'
+import { StoreContext, CustomList, paramsParser, Title, InnerHTML } from '@component'
 import { TopicStore, observer } from '@store'
 import { autoBind } from '@utils'
 import type { Reply } from '@model'
@@ -27,7 +27,7 @@ export default class TopicPage extends Component {
           thumb={author.avatar_url}
         />
         <Card.Body>
-          <InnerHtml html={content}/>
+          <InnerHTML html={content}/>
         </Card.Body>
       </Card>
     )
@@ -41,7 +41,7 @@ export default class TopicPage extends Component {
           thumb={rowData.author.avatar_url}
         />
         <Card.Body>
-          <div className="markdown-body" dangerouslySetInnerHTML={{ __html: rowData.content }}/>
+          <InnerHTML html={rowData.content}/>
         </Card.Body>
       </Card>
     )
