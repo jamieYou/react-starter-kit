@@ -30,8 +30,6 @@ export default class StoreContext extends Component {
     onReshow: (key: string, func: Function) => void
   }
 
-  statusFilter = [401, 403, 404]
-
   stores = [].concat(this.props.store)
 
   componentWillMount() {
@@ -64,9 +62,8 @@ export default class StoreContext extends Component {
 
   @computed
   get errMsg() {
-    const store: ?WebAPIStore = this.stores.find(item => this.statusFilter.includes(_.get(item.error, 'status')))
-    if (store) return store.error.message
-    return '似乎出了点问题'
+    const store: ?WebAPIStore = this.stores.find(item => item.isRejected)
+    return _.get(store, 'error.message', '似乎出了点问题')
   }
 
   render() {

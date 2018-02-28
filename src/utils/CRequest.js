@@ -83,7 +83,7 @@ export class CRequest {
   body(body: Object | FormData): CRequest {
     this.options.body = do {
       if (body instanceof FormData) {
-        this.headers({ "Content-type": "application/x-www-form-urlencoded; charset=UTF-8" })
+        this.headers({ "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" })
         body
       } else {
         JSON.stringify(body)
