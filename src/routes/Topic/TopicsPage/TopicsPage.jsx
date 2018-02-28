@@ -3,14 +3,14 @@ import { Card } from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import { StoreContext, CustomList, Title } from '@component'
 import { TopicsStore, observer } from '@store'
-import type { SimpleTopic } from '@model'
+import type { Topic } from '@model'
 import './TopicsPage.less'
 
 @observer
 export default class TopicsPage extends Component {
   topicsStore = TopicsStore.findOrCreate('all')
 
-  renderRow(rowData: SimpleTopic) {
+  renderRow(rowData: Topic) {
     return (
       <Link to={`/topics/${rowData.id}`}>
         <Card full className="topic-card">
