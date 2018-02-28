@@ -12,7 +12,6 @@ module.exports = {
   context: srcPath,
   entry: {
     main: [
-      'react-hot-loader/patch',
       'webpack-hot-middleware/client?reload=true',
       './index'
     ],

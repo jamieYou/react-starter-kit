@@ -14,19 +14,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 if (process.env.__DEV__) {
-  const { AppContainer } = require('react-hot-loader')
-  const render = () => {
-    ReactDOM.render(
-      <AppContainer warnings={false}>
-        <Routes/>
-      </AppContainer>,
-      document.querySelector('#app'),
-    )
-  }
-
-  render()
-
-  if (module.hot) module.hot.accept('./routes', render)
+  const { hot } = require('react-hot-loader')
+  const Root = hot(module)(Routes)
+  ReactDOM.render(
+    <Root/>,
+    document.querySelector('#app'),
+  )
 } else {
   const { ErrorHandler } = require('@component')
   ReactDOM.render(
