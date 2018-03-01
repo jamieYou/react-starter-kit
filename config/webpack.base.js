@@ -41,7 +41,6 @@ exports.stats = {
   chunkModules: false,
 }
 
-const jsUseLoaders = ['babel-loader', 'eslint-loader']
 const lessLoaderOptinos = `less-loader?{"modifyVars":${JSON.stringify(require('./theme'))}}`
 const postcssLoaderOptinos = {
   loader: 'postcss-loader',
@@ -59,14 +58,9 @@ const postcssLoaderOptinos = {
 
 exports.shareRules = [
   {
-    test: /\.js$/,
+    test: /(\.js|\.jsx)$/,
     exclude: /node_modules/,
-    use: jsUseLoaders
-  },
-  {
-    test: /\.jsx$/,
-    exclude: /node_modules/,
-    use: __DEV__ ? ['react-hot-loader/webpack', ...jsUseLoaders] : jsUseLoaders
+    use: ['babel-loader']
   },
   { test: /\.eot(\?v=\d+.\d+.\d+)?$/, use: 'file-loader' },
   { test: /\.(woff|woff2)$/, use: 'file-loader' },
