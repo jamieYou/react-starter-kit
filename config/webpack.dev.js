@@ -9,9 +9,11 @@ const publicPath = `http://${IPv4}:${process.env.PORT || '8000'}/`
 console.warn(publicPath)
 
 module.exports = {
+  mode: 'development',
   context: srcPath,
   entry: {
     main: [
+      'react-hot-loader/patch',
       'webpack-hot-middleware/client?reload=true',
       './index'
     ],
@@ -26,7 +28,6 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin(GLOBALS),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(viewPath, "template.html"),
       filename: 'index.html',

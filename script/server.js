@@ -21,7 +21,7 @@ app.use(compression({
   }
 }))
 
-app.use(express.static(path.resolve(publicPath), { maxAge: _DEV_ ? 0 : '1y' }))
+app.use(express.static(path.resolve(publicPath)))
 app.use('/api/v1', proxy({ target: proxyTarget, changeOrigin: true }))
 
 if (_DEV_) {

@@ -39,6 +39,7 @@ exports.stats = {
   chunks: false,
   modules: false,
   chunkModules: false,
+  warnings: false,
 }
 
 const lessLoaderOptinos = `less-loader?{"modifyVars":${JSON.stringify(require('./theme'))}}`
@@ -51,23 +52,32 @@ const postcssLoaderOptinos = {
         propWhiteList: [],
         minPixelValue: 2,
       }),
-      autoprefixer()
+      autoprefixer({
+        browsers: [
+          "last 2 versions",
+          "safari >= 8"
+        ]
+      })
     ]
   }
 }
 
 exports.shareRules = [
   {
-    test: /(\.js|\.jsx)$/,
+    test: /\.js$/,
     exclude: /node_modules/,
     use: ['babel-loader']
+  },
+  {
+    test: /\.jsx$/,
+    exclude: /node_modules/,
+    use: __DEV__ ? ['react-hot-loader/webpack', 'babel-loader'] : ['babel-loader']
   },
   { test: /\.eot(\?v=\d+.\d+.\d+)?$/, use: 'file-loader' },
   { test: /\.(woff|woff2)$/, use: 'file-loader' },
   { test: /\.ttf(\?v=\d+.\d+.\d+)?$/, use: 'file-loader' },
-  { test: /\.(jpe?g|png|gif)$/i, use: 'url-loader?limit=10000' },
+  { test: /\.(jpe?g|png|gif|svg)$/i, use: 'url-loader?limit=10000' },
   { test: /\.ico$/, use: 'file-loader?name=[name].[ext]' },
-  { test: /\.svg$/, use: 'svg-sprite-loader' },
   {
     test: /(\.css|\.less)$/,
     use: __DEV__
