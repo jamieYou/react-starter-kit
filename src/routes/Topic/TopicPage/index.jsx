@@ -4,7 +4,7 @@ import { StoreContext, CustomList, paramsParser, Title, InnerHTML } from '@compo
 import { TopicStore, observer } from '@store'
 import { autoBind } from '@utils'
 import type { Reply } from '@model'
-import './TopicPage.less'
+import './index.less'
 
 @paramsParser
 @observer

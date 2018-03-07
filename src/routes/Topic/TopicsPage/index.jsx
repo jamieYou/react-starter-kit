@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { StoreContext, CustomList, Title } from '@component'
 import { TopicsStore, observer } from '@store'
 import type { Topic } from '@model'
-import './TopicsPage.less'
+import './index.less'
 
 @observer
 export default class TopicsPage extends Component {

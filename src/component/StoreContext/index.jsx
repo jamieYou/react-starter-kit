@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom'
 import type { htmlNode, location } from '@constants'
 import type { WebAPIStore } from '@store'
 import { autoBind } from '@utils'
-import './StoreContext.less'
+import './index.less'
 
 @withRouter
 @observer

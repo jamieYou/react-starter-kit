@@ -1,9 +1,9 @@
 // export all component from this file
 
-export { reactRouterCache } from './ReactWebNavigation/ReactWebNavigation'
+export { reactRouterCache } from './ReactWebNavigation'
 export { paramsParser } from './ParameterParser'
-export CustomList from './CustomList/CustomList'
-export StoreContext from './StoreContext/StoreContext'
+export CustomList from './CustomList'
+export StoreContext from './StoreContext'
 export LinkButton from './LinkButton'
 export CustomIcon from './CustomIcon'
 export Title from './Title'

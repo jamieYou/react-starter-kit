@@ -12,7 +12,7 @@ exports.viewPath = path.join(__dirname, "../views")
 
 exports.GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
-  'process.env.__DEV__': __DEV__,
+  'process.env.BROWSER_ENV': JSON.stringify(process.env.BROWSER_ENV || NODE_ENV),
 }
 
 exports.resolve = {

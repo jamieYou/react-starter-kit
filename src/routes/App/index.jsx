@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { reactRouterCache } from '@component'
 import type { htmlNode } from '@constants'
-import './App.less'
+import './index.less'
 
 @reactRouterCache
 export default class App extends Component {
