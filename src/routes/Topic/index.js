@@ -1,2 +1,2 @@
-export TopicsPage from './TopicsPage/TopicsPage'
-export TopicPage from './TopicPage/TopicPage'
+export TopicsPage from './TopicsPage'
+export TopicPage from './TopicPage'

@@ -87,7 +87,7 @@
   },
   "globals": {
     "WeixinJSBridge": true,
-    "process.env.__DEV__": true,
-    "process.env.NODE_ENV": true
+    "process.env.NODE_ENV": true,
+    "process.env.BROWSER_ENV": true
   }
 }

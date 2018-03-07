@@ -5,7 +5,7 @@ import type { IObservableArray } from '@store/helper'
 import type { htmlNode } from '@constants'
 import { observer, computed, Collection, WebAPIStore } from '@store'
 import { autoBind, md } from '@utils'
-import './CustomList.less'
+import './index.less'
 
 @observer
 export default class CustomList extends Component {

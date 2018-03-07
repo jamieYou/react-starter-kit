@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Redirect } from 'react-router-dom'
-import App from './App/App'
-import NotFoundPage from './NotFoundPage/NotFoundPage'
+import App from './App'
+import NotFoundPage from './NotFoundPage'
 import * as Topic from './Topic'
 
 export default function Routes() {
