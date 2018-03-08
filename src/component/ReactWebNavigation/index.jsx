@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import ViewController from './ViewController'
-import type { htmlNode } from '@constants'
 
 export function reactRouterCache(App: Component) {
   return class ReactWebNavigation extends Component {
     props: {
-      children: htmlNode
+      children: any
     }
 
     render() {

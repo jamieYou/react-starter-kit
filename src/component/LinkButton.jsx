@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import { Button } from 'antd-mobile'
 import _ from 'lodash'
 import { withRouter } from 'react-router'
-import type { htmlNode, history } from '@constants'
+import type { history } from '@constants'
 import { autoBind } from '@utils'
 
 @withRouter
 export default class LinkButton extends Component {
   props: {
-    children: htmlNode,
+    children: any,
     to: string,
     history: history,
   }

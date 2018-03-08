@@ -1,9 +1,4 @@
-import type { Component } from 'react'
-
 export * from "./environment"
-
-type htmlType = string | number | Component | null | boolean
-export type htmlNode = htmlType | Array<htmlType>
 
 export type location = {
   hash: string,

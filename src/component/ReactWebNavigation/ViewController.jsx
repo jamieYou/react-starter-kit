@@ -3,10 +3,10 @@ import { Switch } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import ViewModal from './ViewModal'
 import { autoBind } from '@utils'
-import type { htmlNode, location, history, match } from '@constants'
+import type { location, history, match } from '@constants'
 
 type propsType = {
-  routers: htmlNode,
+  routers: Component | Component[],
   location: location,
   history: history,
   match: match,

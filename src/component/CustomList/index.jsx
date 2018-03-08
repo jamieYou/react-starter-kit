@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import { ListView, PullToRefresh, ActivityIndicator } from 'antd-mobile'
 import type { IObservableArray } from '@store/helper'
-import type { htmlNode } from '@constants'
 import { observer, computed, Collection, WebAPIStore } from '@store'
 import { autoBind, md } from '@utils'
 import './index.less'
@@ -17,7 +16,7 @@ export default class CustomList extends Component {
     return render(rowData, sectionID, rowID, highlightRow)
   })
 
-  static ListFooter = observer(function ListFooter({ store, onRejected }: { store: Collection | WebAPIStore, onRejected: Function }): htmlNode {
+  static ListFooter = observer(function ListFooter({ store, onRejected }: { store: Collection | WebAPIStore, onRejected: Function }): any {
     const isCollection = store instanceof Collection
     const { isFetching, isRejected, isComplete, isFulfilled } = store
     if (isCollection ? isComplete : isFulfilled) return <div>没有更多了</div>
@@ -28,10 +27,10 @@ export default class CustomList extends Component {
 
   props: {
     dataList?: IObservableArray | Object<Array>,
-    renderRow: (rowData: Object, sectionID: string, rowID: string, highlightRow: (sectionID: string, rowID: string) => void) => htmlNode,
+    renderRow: (rowData: Object, sectionID: string, rowID: string, highlightRow: (sectionID: string, rowID: string) => void) => any,
     store: Collection | WebAPIStore,
     initialListSize?: number,
-    renderHeader?: Function | htmlNode,
+    renderHeader?: Function | string,
     renderSectionHeader?: Function,
   }
 

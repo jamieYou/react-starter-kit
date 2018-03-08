@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import type { htmlNode, location } from '@constants'
+import type { location } from '@constants'
 import { md } from '@utils'
 
 export default class ViewModal extends Component {
   props: {
     id: string,
-    children: htmlNode,
+    children: any,
     location: location,
     display: ?string,
   }

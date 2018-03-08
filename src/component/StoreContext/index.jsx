@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { computed } from 'mobx'
 import { observer } from 'mobx-react'
 import { withRouter } from 'react-router-dom'
-import type { htmlNode, location } from '@constants'
+import type { location } from '@constants'
 import type { WebAPIStore } from '@store'
 import { autoBind } from '@utils'
 import './index.less'
@@ -19,7 +19,7 @@ export default class StoreContext extends Component {
 
   props: {
     location: location,
-    children: htmlNode,
+    children: any,
     className?: string,
     store: WebAPIStore | Array<WebAPIStore>,
     onLoad?: Function,
