@@ -43,9 +43,10 @@ export class CRequest {
 
   options = {
     method: 'GET',
-    // fetch api 默认不支持 set-cookie
-    // 增加 credentials 参数来支持 set-cookie
-    // https://github.com/github/fetch#sending-cookies
+    /** fetch api 默认不支持 set-cookie
+     ** 增加 credentials 参数来支持 set-cookie
+     ** https://github.com/github/fetch#sending-cookies
+     **/
     credentials: 'include',
     headers: {
       'Accept': 'application/json',
@@ -92,6 +93,12 @@ export class CRequest {
     return this
   }
 
+  formBody(body: Object) {
+    const fd = new FormData()
+    _.forEach(body, (item, key) => fd.append(key, item))
+    return this.body(fd)
+  }
+
   params(params: Object): CRequest {
     this.pathParams = params
     return this
@@ -115,7 +122,7 @@ export class CRequest {
       return res
     } else {
       // 需要和后端定义错误信息的字段(error_msg)
-      const err = new Error(_.get(res, 'data.error_msg', '未知错误'))
+      const err = new Error(_.get(res, 'data.error', '未知错误'))
       err.status = res.status
       throw err
     }

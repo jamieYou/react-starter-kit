@@ -4,7 +4,6 @@ import { observables } from './observables'
 import { WebAPIStore } from './WebAPIStore'
 import fetchAction from './fetchAction'
 import type { apiRes } from '@utils'
-import type { meta } from '@model'
 
 @observables({
   meta: {
@@ -15,41 +14,36 @@ import type { meta } from '@model'
   data: []
 })
 export class Collection extends WebAPIStore {
-  meta: meta
+  meta: {
+    total: number,
+    page: number,
+    per_page: number,
+  }
   data: IObservableArray
   fetchApi: Object => apiRes
-  parameters: ?Object = null
+  params: Object = {}
 
   @fetchAction.bound
-  async fetchData() {
-    const res = await this.fetchApi({ page: 1, per_page: this.meta.per_page, ...this.parameters })
-    const { meta, data } = res.data
-    return {
-      meta, data: this.formatData(data)
-    }
+  fetchData() {
+    return this.fetchApi({ page: 1, per_page: this.meta.per_page, ...this.params })
   }
 
   @fetchAction.bound
-  async fetchMoreData() {
-    const res = await this.fetchApi({
+  async* fetchMoreData() {
+    const res = yield this.fetchApi({
       page: this.meta.page + 1,
       per_page: this.meta.per_page,
-      ...this.parameters,
+      ...this.params,
     })
     const { meta, data } = res.data
-    return {
-      meta, data: this.data.concat(this.formatData(data))
-    }
+    this.meta = meta
+    this.data.push(...data)
   }
 
   @fetchAction.bound
-  reFetchData() {
-    return this.fetchApi({ page: 1, per_page: this.data.length || this.meta.per_page, ...this.parameters })
-      .then(res => ({ data: this.formatData(res.data.data) }))
-  }
-
-  formatData(data: []): data {
-    return data
+  async* reFetchData() {
+    const res = yield this.fetchApi({ page: 1, per_page: this.data.length || this.meta.per_page, ...this.params })
+    this.data = res.data.data
   }
 
   @action.bound
@@ -58,8 +52,17 @@ export class Collection extends WebAPIStore {
     this.data.clear()
   }
 
+  findItemById(id: number) {
+    return this.data.find(item => item.id === id)
+  }
+
   @computed
   get isComplete() {
     return this.isFulfilled && this.data.length >= this.meta.total
+  }
+
+  @computed
+  get dataSource() {
+    return this.data.slice()
   }
 }
