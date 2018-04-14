@@ -1,4 +1,4 @@
-const theme_color = void 0 //可以设置主题颜色覆盖antd-mobile的主题
+const theme_color = '#108ee9' //可以设置主题颜色覆盖antd-mobile的主题
 
 module.exports = {
   'hd': '1px',

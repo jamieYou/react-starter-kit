@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Switch } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import ViewModal from './ViewModal'
+import ViewModal from './view-modal'
 import { autoBind } from '@utils'
 import type { location, history, match } from '@constants'
 
 type propsType = {
-  routers: Component | Component[],
+  routers: Switch,
   location: location,
   history: history,
   match: match,
@@ -115,9 +115,9 @@ export default class ViewController extends Component {
             const display = key === this.lastLocationKey ? null : 'none'
             return (
               <ViewModal id={key} key={key} location={location} display={display}>
-                <Switch location={location}>
-                  {routers}
-                </Switch>
+                {
+                  React.cloneElement(routers, { location })
+                }
               </ViewModal>
             )
           })

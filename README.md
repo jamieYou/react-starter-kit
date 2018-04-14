@@ -81,6 +81,7 @@ $ yarn start       # Compile and launch
   src目录下的每个模块都有一个index文件，用于导出当前模块的所有公开内容。当引入时，引入模块的index文件。
   
   以component为例
+
   ```
   // 应当这样做
   // component/index.js
@@ -96,6 +97,7 @@ $ yarn start       # Compile and launch
   为了不出现，在导入模块时，目录级别过于复杂的情况。我为每个模块都定义了绝对路径。
   
   以component为例
+
   ```
   // 应当这样做
   import { CustomList } from '@component'
@@ -103,6 +105,7 @@ $ yarn start       # Compile and launch
   // 而不是
   import { CustomList } from '../../component'
   ```
+
   具体配置在 [config/webpack.base.js](config/webpack.base.js#L20) 里。
   
 ## 语法规范

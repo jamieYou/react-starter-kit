@@ -1,5 +1,5 @@
-export { observer } from 'mobx-react'
+export { observer, Observer } from 'mobx-react'
 export { action, computed, autorun } from 'mobx'
 export { StoreHelper, WebAPIStore, Collection } from './helper'
-export { TopicsStore } from './TopicsStore'
-export { TopicStore } from './TopicStore'
+export { routerStore } from './router-store'
+export { authStore } from './auth-store'
