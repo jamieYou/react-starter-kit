@@ -1,8 +1,7 @@
-//http://es6.ruanyifeng.com/#docs/promise#Promise-prototype-finally
-Promise.prototype.finally = function (cb) {
+Promise.prototype.finally = function (callback) {
   return this.then(
-    value => Promise.resolve(cb()).then(() => value),
-    reason => Promise.resolve(cb()).then(() => {
+    value => Promise.resolve(callback()).then(() => value),
+    reason => Promise.resolve(callback()).then(() => {
       throw reason
     })
   )

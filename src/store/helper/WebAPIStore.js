@@ -1,8 +1,8 @@
-import { action, observable, toJS, autorun } from 'mobx'
+import { action, observable, toJS, autorun, computed } from 'mobx'
 import { StoreHelper } from './StoreHelper'
 import type { ErrorType, CResponse } from '@utils'
 
-export class WebAPIStore<instanceKey: string> extends StoreHelper {
+export class WebAPIStore extends StoreHelper {
   fetchData: Function
   @observable isFetching = false
   @observable isRejected = false
@@ -16,10 +16,9 @@ export class WebAPIStore<instanceKey: string> extends StoreHelper {
   }
 
   @action
-  setFulfilledState(response: CResponse | Function | Object, actionName) {
+  setFulfilledState(response: CResponse | Object, actionName) {
     const newState = do {
-      if (typeof response === 'function') null
-      else if (response instanceof window.Response) response.data
+      if (response instanceof window.Response) response.data
       else response
     }
     Object.assign(this, {
@@ -28,18 +27,17 @@ export class WebAPIStore<instanceKey: string> extends StoreHelper {
       isFulfilled: true,
       error: null,
     }, newState)
-    typeof response === 'function' && response()
     console.log("%cfulfilled", "color:green", this.logMessage(actionName))
   }
 
   @action
-  setRejectedState(error, actionName) {
+  setRejectedState(error, actionName, options) {
     const nextState = {
       error,
       isFetching: false,
       isRejected: true,
     }
-    Object.assign(this, nextState)
+    Object.assign(this, nextState, options)
     console.log("%crejected", "color:red", this.logMessage(actionName))
   }
 
@@ -63,5 +61,14 @@ export class WebAPIStore<instanceKey: string> extends StoreHelper {
       action: actionName,
       state: toJS(this)
     }
+  }
+
+  loadingAll(...webAPIStores: WebAPIStore[]) {
+    return this.loading || !!webAPIStores.find(item => item.loading)
+  }
+
+  @computed
+  get loading() {
+    return this.isFetching
   }
 }

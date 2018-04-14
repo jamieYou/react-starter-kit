@@ -28,11 +28,5 @@ export type pageProps = {
   location: location,
   history: history,
   match: match,
-  parameters: {},
-}
-
-export interface SpriteSymbol {
-  id: string;
-  content: string;
-  viewBox: string;
+  params: {},
 }

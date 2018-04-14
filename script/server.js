@@ -2,15 +2,11 @@ const path = require('path')
 const express = require('express')
 const logger = require('morgan')
 const proxy = require('http-proxy-middleware')
-const _ = require('lodash')
 const compression = require('compression')
-const ipv4 = require('ipv4')
+const { publicPath, port, publicURL, NODE_ENV, __DEV__, proxyTarget } = require('../config/env')
 
 const app = express()
-const _DEV_ = _.get(process.env, 'NODE_ENV', 'development') === 'development'
-const port = process.env.PORT || 8000
-const publicPath = _DEV_ ? 'src' : 'dist'
-const proxyTarget = 'https://cnodejs.org' || `http://${ipv4}:3000`
+const srcFolder = __DEV__ ? 'src' : 'dist'
 
 app.use(logger('dev'))
 
@@ -21,10 +17,12 @@ app.use(compression({
   }
 }))
 
-app.use(express.static(path.resolve(publicPath)))
+app.use(express.static(path.resolve(srcFolder)))
+// login example
+app.use('/api/v1/users/current', (req, res) => res.json({ id: 1 }))
 app.use('/api/v1', proxy({ target: proxyTarget, changeOrigin: true }))
 
-if (_DEV_) {
+if (__DEV__) {
   const webpack = require('webpack')
   const webpackDevMiddleware = require('webpack-dev-middleware')
   const webpackHotMiddleware = require('webpack-hot-middleware')
@@ -33,8 +31,8 @@ if (_DEV_) {
   const bundler = webpack(config)
 
   app.use(webpackDevMiddleware(bundler, {
+    publicPath,
     stats: config.stats,
-    publicPath: config.output.publicPath,
   }))
 
   app.use(webpackHotMiddleware(bundler, {
@@ -49,15 +47,15 @@ if (_DEV_) {
     res.end()
   })
 } else {
-  app.use('/', (req, res) => res.sendfile(`${publicPath}/index.html`))
+  app.use('/', (req, res) => res.sendfile(path.join(srcFolder, publicPath, 'index.html')))
 }
 
 app.use(function (err, req, res, next) {
   res.status(err.status || 500)
-  res.json(err)
+  res.json({ error: err.message })
 })
 
 app.listen(port, () => {
-  console.warn(process.env.NODE_ENV || 'development')
-  console.log(`server running @${port}`)
+  console.log(NODE_ENV)
+  console.log(`server running ${publicURL}`)
 })

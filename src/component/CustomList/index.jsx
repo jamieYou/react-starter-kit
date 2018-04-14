@@ -2,36 +2,19 @@ import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import { ListView, PullToRefresh, ActivityIndicator } from 'antd-mobile'
 import type { IObservableArray } from '@store/helper'
-import { observer, computed, Collection, WebAPIStore } from '@store'
+import { observer, computed, Collection, WebAPIStore, Observer } from '@store'
 import { autoBind, md } from '@utils'
 import './index.less'
 
 @observer
 export default class CustomList extends Component {
-  static ListHeader = observer(function ListHeader({ render }) {
-    return render()
-  })
-
-  static ListRow = observer(function ListRow({ rowData, sectionID, rowID, highlightRow, render }) {
-    return render(rowData, sectionID, rowID, highlightRow)
-  })
-
-  static ListFooter = observer(function ListFooter({ store, onRejected }: { store: Collection | WebAPIStore, onRejected: Function }): any {
-    const isCollection = store instanceof Collection
-    const { isFetching, isRejected, isComplete, isFulfilled } = store
-    if (isCollection ? isComplete : isFulfilled) return <div>没有更多了</div>
-    if (isFetching) return <ActivityIndicator text="加载中..."/>
-    if (isRejected) return <span onClick={onRejected}>重新加载</span>
-    return null
-  })
-
   props: {
-    dataList?: IObservableArray | Object<Array>,
     renderRow: (rowData: Object, sectionID: string, rowID: string, highlightRow: (sectionID: string, rowID: string) => void) => any,
     store: Collection | WebAPIStore,
     initialListSize?: number,
     renderHeader?: Function | string,
     renderSectionHeader?: Function,
+    dataList?: IObservableArray | Object<Array>,
   }
 
   isCollection = this.props.store instanceof Collection
@@ -65,11 +48,7 @@ export default class CustomList extends Component {
   async onRefresh() {
     if (this.state.refreshing) return
     this.setState({ refreshing: true })
-    try {
-      await this.props.store.fetchData()
-    } finally {
-      this.setState({ refreshing: false })
-    }
+    this.props.store.fetchData().finally(() => this.setState({ refreshing: false }))
   }
 
   @autoBind
@@ -103,23 +82,34 @@ export default class CustomList extends Component {
   renderHeader() {
     const { renderHeader } = this.props
     if (typeof renderHeader === 'function') {
-      const { ListHeader } = this.constructor
-      return <ListHeader render={renderHeader}/>
+      return <Observer render={renderHeader}/>
     }
     else return renderHeader
   }
 
   @autoBind
-  renderRow(rowData, sectionID, rowID, highlightRow) {
-    const { ListRow } = this.constructor
-    const { renderRow: render } = this.props
-    return <ListRow {...{ rowData, sectionID, rowID, highlightRow, render }}/>
+  renderListRow(rowData, sectionID, rowID, highlightRow) {
+    return this.props.renderRow(rowData, sectionID, rowID, highlightRow)
+  }
+
+  @autoBind
+  renderRow(...args) {
+    return <Observer render={() => this.props.renderRow(...args)}/>
+  }
+
+  @autoBind
+  renderListFooter() {
+    const { store } = this.props
+    const { isFetching, isRejected, isComplete, isFulfilled } = store
+    if (this.isCollection ? isComplete : isFulfilled) return <div>没有更多了</div>
+    if (isFetching) return <ActivityIndicator text="加载中..."/>
+    if (isRejected) return <span onClick={this.onRejected}>重新加载</span>
+    return null
   }
 
   @autoBind
   renderFooter() {
-    const { ListFooter } = this.constructor
-    return <ListFooter store={this.props.store} onRejected={this.onRejected}/>
+    return <Observer render={this.renderListFooter}/>
   }
 
   render() {

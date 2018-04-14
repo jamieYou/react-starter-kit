@@ -1,4 +1,4 @@
-const environment = process.env.BROWSER_ENV
+const environment = process.env.NODE_ENV
 
 const environmentConfig = {
   "test": {

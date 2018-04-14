@@ -6,14 +6,14 @@ import Routes from './routes'
 
 mobileHack()
 
-if (process.env.BROWSER_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   const { enableLogging } = require('mobx-logger')
   enableLogging({
     action: true
   })
 }
 
-if (process.env.BROWSER_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   const { AppContainer } = require('react-hot-loader')
   const render = () => {
     ReactDOM.render(
