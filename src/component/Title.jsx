@@ -1,29 +1,13 @@
 import { Component } from 'react'
-import { withRouter } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import { md } from '@utils'
-import type { location } from '@constants'
+import { md } from "@utils"
 
-@withRouter
 export default class Title extends Component {
-  static contextTypes = {
-    onReshow: PropTypes.func
-  }
-
   props: {
-    location: location,
-    value: string | number | null
+    children?: any
   }
 
-  componentWillMount() {
-    const { location } = this.props
-    this.setTitle()
-    this.context.onReshow(location.key, this::this.setTitle)
-  }
-
-  setTitle() {
-    const { value = 'A100' } = this.props
-    document.title = value
+  static setTitle(title) {
+    document.title = title
     if (md.is('iPhone')) {
       const iframe: HTMLIFrameElement = document.createElement("iframe")
       iframe.style.display = "none"
@@ -37,6 +21,14 @@ export default class Title extends Component {
       iframe.addEventListener('load', onLoad)
       document.body.appendChild(iframe)
     }
+  }
+
+  componentWillMount() {
+    this.constructor.setTitle(this.title)
+  }
+
+  get title() {
+    return [].concat(this.props.children)[0] || 'c-node'
   }
 
   render() {

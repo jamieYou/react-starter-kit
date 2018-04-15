@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Icon, Result } from 'antd-mobile'
-import './NotFoundPage.less'
+import './index.less'
 
 export default class NotFoundPage extends Component {
   render() {

@@ -30,6 +30,7 @@
     "no-debugger": 1,
     "no-var": 2,
     "import/named": 0,
+    "import/no-duplicates": 2,
     "import/no-unresolved": 0,
     "semi": [
       0,
@@ -57,7 +58,7 @@
     ],
     "react/jsx-boolean-value": 2,
     "react/jsx-closing-bracket-location": 2,
-    "react/jsx-curly-spacing": 1,
+    "react/jsx-curly-spacing": 2,
     "react/jsx-indent-props": 0,
     "react/jsx-key": 1,
     "react/jsx-max-props-per-line": 0,
@@ -80,14 +81,12 @@
     "react/prefer-es6-class": 2,
     "react/prop-types": 1,
     "react/react-in-jsx-scope": 1,
-    "import/extensions": 1,
     "react/self-closing-comp": 2,
     "react/sort-comp": 0,
     "react/jsx-wrap-multilines": 2
   },
   "globals": {
-    "WeixinJSBridge": true,
-    "process.env.__DEV__": true,
+    "PUBLIC_PATH": true,
     "process.env.NODE_ENV": true
   }
 }

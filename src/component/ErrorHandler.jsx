@@ -1,9 +1,8 @@
 import { Component } from 'react'
-import { htmlNode } from '@constants'
 
 export default class ErrorHandler extends Component {
   props: {
-    children: htmlNode,
+    children: any,
     onError?: Error => any,
   }
 

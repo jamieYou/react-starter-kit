@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== 'production') {
   })
 }
 
-if (process.env.__DEV__) {
+if (process.env.NODE_ENV === 'development') {
   const { AppContainer } = require('react-hot-loader')
   const render = () => {
     ReactDOM.render(
@@ -23,9 +23,7 @@ if (process.env.__DEV__) {
       document.querySelector('#app'),
     )
   }
-
   render()
-
   if (module.hot) module.hot.accept('./routes', render)
 } else {
   const { ErrorHandler } = require('@component')

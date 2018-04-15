@@ -1,14 +1,11 @@
 const path = require('path')
-const IPv4 = require('ipv4')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { resolve, shareRules, GLOBALS, srcPath, viewPath, stats } = require('./webpack.base.js')
-
-const publicPath = `http://${IPv4}:${process.env.PORT || '8000'}/`
-
-console.warn(publicPath)
+const { publicPath, srcPath, viewPath, favicon } = require('../config/env')
+const { resolve, shareRules, stats, GLOBALS } = require('./webpack.base.js')
 
 module.exports = {
+  mode: 'development',
   context: srcPath,
   entry: {
     main: [
@@ -24,15 +21,25 @@ module.exports = {
   },
   resolve,
   devtool: 'cheap-module-eval-source-map',
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        default: false,
+      }
+    },
+  },
   plugins: [
     new webpack.DefinePlugin(GLOBALS),
+    new webpack.ContextReplacementPlugin(/moment(\/|\\)locale$/, /zh-cn/),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(viewPath, "template.html"),
       filename: 'index.html',
       inject: true,
+      favicon,
     }),
+    // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin),
   ],
   module: {
     rules: shareRules

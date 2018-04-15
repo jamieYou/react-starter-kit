@@ -9,7 +9,7 @@ export default class InnerHTML extends Component {
   }
 
   get innerHTML() {
-    const { replaceBr, html } = this.props
+    const { replaceBr = true, html } = this.props
     return replaceBr ? html.replace(/\n/g, '<br/>') : html
   }
 

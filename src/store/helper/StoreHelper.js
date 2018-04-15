@@ -1,13 +1,13 @@
-import { action, observable, useStrict } from 'mobx'
+import { action, observable, configure } from 'mobx'
 
-useStrict(true)
+configure({ enforceActions: true })
 
-export class StoreHelper<instanceKey: string> {
+export class StoreHelper {
   static _instanceList: Map
 
   static get instanceList(): Map {
     if (!this._instanceList) {
-      this._instanceList = observable.shallowMap({})
+      this._instanceList = observable.map({}, { deep: false })
     }
     return this._instanceList
   }
