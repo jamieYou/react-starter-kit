@@ -2,6 +2,9 @@
 
   这个启动包的是为了让你使用一整套最新react的生态，所有都是可配置，富特性，基于webpack已经提供代码热加载，使用less预处理css，代码分割等等更多。
 
+# 更新日志
+  [v1.1.1](docs/v1.1.1.md)
+
 # 特性
   * [react](https://doc.react-china.org/)
   * [mobx](http://cn.mobx.js.org/)
@@ -47,11 +50,11 @@ $ yarn start       # Compile and launch
 │   ├── model                # 数据模型的接口类型文件
 │   ├── routes               # 主路由和异步分割点，页面级别的上层react组件都放在这里
 │   │   ├── index.js         # 启动主程序路由
-│   │   └── XxxPage         # 页面级别的文件夹
-│   │       ├── XxxPage.js  # 页面组件
-│   │       └── XxxPage.scss# 页面样式
+│   │   └── xxx-page         # 页面级别的文件夹
+│   │       ├── index.js     # 页面组件
+│   │       └── index.less   # 页面样式
 │   ├── store                # mobx管理
-│   │   ├── XxxStore.js      # 数据模型(Model)
+│   │   ├── xxx-store.js     # 数据模型(Model)
 │   │   └── helper           # 帮助方法
 │   ├── utils                # 可复用的帮助方法
 │   └── index.js             # 程序启动和渲染 
@@ -85,13 +88,13 @@ $ yarn start       # Compile and launch
   ```
   // 应当这样做
   // component/index.js
-  export CustomList from './CustomList/CustomList'
+  export CustomList from './custom-list'
 
   // 导入时
   import { CustomList } from '../../component'
   
   // 而不是
-  import CustomList from '../../component/CustomList/CustomList'
+  import CustomList from '../../component/custom-list'
   ```
   
   为了不出现，在导入模块时，目录级别过于复杂的情况。我为每个模块都定义了绝对路径。
@@ -108,9 +111,6 @@ $ yarn start       # Compile and launch
 
   具体配置在 [config/webpack.base.js](config/webpack.base.js#L20) 里。
   
-## 语法规范
-  查阅 [eslint.md](docs/eslint.md)
-
 ## Flow
   查阅 [flow.md](docs/flow.md)
 
