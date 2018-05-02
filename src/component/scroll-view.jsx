@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
+import { findDOMNode } from 'react-dom'
 import { withRouter } from "react-router-dom"
 import { PullToRefresh, WhiteSpace, Button } from 'antd-mobile'
-import { autoBind, md } from '@utils'
+import { autoBind } from '@utils'
 import type { location } from '@constants'
 
 @withRouter
@@ -22,6 +23,13 @@ export default class ScrollView extends Component {
 
   scrollTop = 0
 
+  style = {
+    height: '100%',
+    overflow: 'auto',
+    transform: 'translateZ(0px)',
+    WebkitOverflowScrolling: 'touch',
+  }
+
   state = {
     refreshing: false,
     loading: false,
@@ -38,20 +46,7 @@ export default class ScrollView extends Component {
 
   @autoBind
   getScrollViewDom(scrollView) {
-    this.scrollView = scrollView
-    if (scrollView && md.match('MicroMessenger')) {
-      let startY = 0
-      scrollView.addEventListener('touchstart', (e) => {
-        startY = e.changedTouches[0].pageY
-      })
-      scrollView.addEventListener('touchmove', (e) => {
-        const endY = e.changedTouches[0].pageY
-        const distanceY = endY - startY
-        if (scrollView.scrollTop === 0 && distanceY > 0) {
-          e.preventDefault()
-        }
-      })
-    }
+    this.scrollView = findDOMNode(scrollView)
   }
 
   @autoBind
@@ -77,7 +72,7 @@ export default class ScrollView extends Component {
     const { scrollHeight, clientHeight, scrollTop } = event.target
     const distanceY = scrollTop - this.scrollTop
     this.scrollTop = scrollTop
-    const isBottom = clientHeight + scrollTop >= scrollHeight - 30
+    const isBottom = clientHeight + scrollTop >= scrollHeight - 60
     if (isBottom && distanceY > 0) this.onEndReached()
   }
 
@@ -103,27 +98,26 @@ export default class ScrollView extends Component {
 
   render() {
     const { onEndReached, onRefresh } = this.props
-    return (
-      <div
-        style={{ height: '100%', overflow: 'auto' }} ref={this.getScrollViewDom}
-        onScroll={onEndReached ? this.onScroll : null}
-      >
-        {
-          do {
-            if (onRefresh) {
-              <PullToRefresh
-                direction={'down'}
-                refreshing={this.state.refreshing}
-                onRefresh={this.onRefresh}
-              >
-                {this.renderChildren()}
-              </PullToRefresh>
-            } else {
-              this.renderChildren()
-            }
-          }
-        }
-      </div>
-    )
+    const scrollProps = {
+      style: this.style,
+      ref: this.getScrollViewDom,
+      onScroll: onEndReached ? this.onScroll : null,
+    }
+    return do {
+      if (onRefresh) {
+        <PullToRefresh
+          direction={'down'}
+          refreshing={this.state.refreshing}
+          onRefresh={this.onRefresh}
+          {...scrollProps}
+        >
+          {this.renderChildren()}
+        </PullToRefresh>
+      } else {
+        <div {...scrollProps}>
+          {this.renderChildren()}
+        </div>
+      }
+    }
   }
 }

@@ -62,6 +62,12 @@ export class Collection extends WebAPIStore {
   }
 
   @computed
+  get loadMore() {
+    const { isComplete, isFulfilled, fetchMoreData } = this
+    return !isComplete && isFulfilled ? fetchMoreData : null
+  }
+
+  @computed
   get dataSource() {
     return this.data.slice()
   }
