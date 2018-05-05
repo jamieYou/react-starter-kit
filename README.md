@@ -44,14 +44,14 @@ $ yarn start       # Compile and launch
 ├── script                   # node脚本
 │   └── server.js            # 服务端程序入口文件
 ├── src                      # 前端目录
+│   ├── app                  # 启动主程序
 │   ├── component            # 全局可复用的表现组件
 │   ├── constants            # 常量（包括类型声明文件）
 │   ├── image                # 图片
 │   ├── model                # 数据模型的接口类型文件
 │   ├── routes               # 主路由和异步分割点，页面级别的上层react组件都放在这里
-│   │   ├── index.js         # 启动主程序路由
 │   │   └── xxx-page         # 页面级别的文件夹
-│   │       ├── index.js     # 页面组件
+│   │       ├── index.jsx    # 页面组件
 │   │       └── index.less   # 页面样式
 │   ├── store                # mobx管理
 │   │   ├── xxx-store.js     # 数据模型(Model)

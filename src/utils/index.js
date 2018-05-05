@@ -1,5 +1,4 @@
 // export all helper from this file
-import './shim'
 
 export { CRequest } from './c-request'
 export type { CResponse, ErrorType, apiRes } from './c-request'

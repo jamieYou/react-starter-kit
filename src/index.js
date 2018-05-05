@@ -1,4 +1,5 @@
 import 'babel-polyfill'
+import 'core-js/modules/es7.promise.finally'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { mobileHack } from '@utils'
