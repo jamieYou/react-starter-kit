@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx'
 import qs from "qs"
 import type { location, history } from '@constants'
+import { decoder } from '@utils'
 
 export class RouterStore {
   @observable.ref location: location = {}
@@ -22,18 +23,7 @@ export class RouterStore {
 
   @computed
   get query() {
-    return qs.parse(this.location.search.replace(/^\?/, ''), {
-      decoder(text) {
-        if (/^(\d+|\d*\.\d+)$/.test(text)) return parseFloat(text)
-        const keywords = { true: true, false: false, null: null }
-        if (text in keywords) return keywords[text]
-        try {
-          return decodeURIComponent(text.replace(/\+/g, ' '))
-        } catch (err) {
-          return text
-        }
-      }
-    })
+    return qs.parse(this.location.search.replace(/^\?/, ''), { decoder })
   }
 }
 

@@ -38,11 +38,15 @@ export class WebAPIStore extends StoreHelper {
     this.logMessage("%crejected", "color:red", actionName)
   }
 
+  tryFetchData() {
+    return this.instanceKey && !this.isFulfilled && this.fetchData()
+  }
+
   logMessage(status, color, actionName) {
     if (process.env.NODE_ENV !== 'production') {
       console.log(
-        status,color,
-        `${this.constructor.name}::${this.instanceKey}->${actionName}`,
+        status, color,
+        `${this.constructor.name.replace(/^\w/, w => w.toLowerCase())}->${actionName}`,
         { state: toJS(this) }
       )
     }
