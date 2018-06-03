@@ -1,13 +1,12 @@
 const path = require('path')
-const ipv4 = require('ipv4')
 
 module.exports = {
   port: process.env.PORT || 8000,
-  proxyTarget: `http://${ipv4}:3000`,
+  proxyTarget: 'http://127.0.0.1:3000',
   publicPath: '/',
   srcPath: path.resolve("src"),
   get distPath() {
-    return path.join(__dirname, "../dist", this.publicPath)
+    return path.join(__dirname, "../dist")
   },
   viewPath: path.resolve("views"),
   NODE_ENV: process.env.NODE_ENV || 'development',
@@ -15,7 +14,7 @@ module.exports = {
     return this.NODE_ENV === 'development' || this.NODE_ENV === 'test'
   },
   get publicURL() {
-    return `http://${ipv4}:${this.port}${this.publicPath}`
+    return `http://127.0.0.1:${this.port}${this.publicPath}`
   },
   get favicon() {
     return path.join(this.srcPath, 'image/favicon.ico')
