@@ -35,6 +35,10 @@ export class CRequest {
     return new this(url, options).method('delete')
   }
 
+  static apiConcat(pathname) {
+    return urlConcat(apiOrigin, 'api/v1', pathname)
+  }
+
   url = ''
 
   search = ''
