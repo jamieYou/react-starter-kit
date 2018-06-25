@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx'
-import qs from "qs"
+import qs from 'qs'
 import type { location, history } from '@constants'
 import { decoder } from '@utils'
 
@@ -18,7 +18,10 @@ export class RouterStore {
 
   set query(query) {
     const { pathname } = this.location
-    this.history.push({ pathname, search: qs.stringify(query, { sort: (a, b) => a.localeCompare(b) }) })
+    this.history.push({
+      pathname,
+      search: qs.stringify(query, { sort: (a, b) => a.localeCompare(b) }),
+    })
   }
 
   @computed
@@ -27,4 +30,4 @@ export class RouterStore {
   }
 }
 
-export const routerStore: RouterStore = new RouterStore
+export const routerStore: RouterStore = new RouterStore()

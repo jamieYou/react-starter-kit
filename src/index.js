@@ -10,7 +10,7 @@ mobileHack()
 if (process.env.NODE_ENV !== 'production') {
   const { enableLogging } = require('mobx-logger')
   enableLogging({
-    action: true
+    action: true,
   })
 }
 
@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'development') {
   const render = () => {
     ReactDOM.render(
       <AppContainer warnings={false}>
-        <Routes/>
+        <Routes />
       </AppContainer>,
       document.querySelector('#app'),
     )
@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === 'development') {
   const { ErrorHandler } = require('@component')
   ReactDOM.render(
     <ErrorHandler>
-      <Routes/>
+      <Routes />
     </ErrorHandler>,
     document.querySelector('#app'),
   )

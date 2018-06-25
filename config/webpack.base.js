@@ -2,12 +2,12 @@ const path = require('path')
 const webpack = require('webpack')
 const pxtorem = require('postcss-pxtorem')
 const autoprefixer = require('autoprefixer')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const { publicPath, NODE_ENV, __DEV__, srcPath } = require('../config/env')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { NODE_ENV, __DEV__, srcPath } = require('./env')
 
 const lessLoaderOptions = {
   loader: 'less-loader',
-  options: { javascriptEnabled: true, modifyVars: require('./theme') }
+  options: { javascriptEnabled: true, modifyVars: require('./theme') },
 }
 
 const postcssLoaderOptions = {
@@ -20,13 +20,10 @@ const postcssLoaderOptions = {
         minPixelValue: 2,
       }),
       autoprefixer({
-        browsers: [
-          "last 2 versions",
-          "safari >= 8"
-        ]
-      })
-    ]
-  }
+        browsers: ['last 2 versions', 'safari >= 8'],
+      }),
+    ],
+  },
 }
 
 module.exports = {
@@ -34,15 +31,15 @@ module.exports = {
   resolve: {
     modules: [path.resolve('node_modules')],
     alias: {
-      '@store': path.join(srcPath, "store"),
-      '@component': path.join(srcPath, "component"),
-      '@utils': path.join(srcPath, "utils"),
-      '@constants': path.join(srcPath, "constants"),
-      '@image': path.join(srcPath, "image"),
-      '@routes': path.join(srcPath, "routes"),
-      '@style': path.join(srcPath, "style"),
+      '@store': path.join(srcPath, 'store'),
+      '@component': path.join(srcPath, 'component'),
+      '@utils': path.join(srcPath, 'utils'),
+      '@constants': path.join(srcPath, 'constants'),
+      '@image': path.join(srcPath, 'image'),
+      '@routes': path.join(srcPath, 'routes'),
+      '@style': path.join(srcPath, 'style'),
     },
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   optimization: {
     splitChunks: {
@@ -52,7 +49,6 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
-      'PUBLIC_PATH': JSON.stringify(publicPath),
     }),
     // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({ analyzerPort: 8889 }),
   ],
@@ -61,12 +57,12 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: ['babel-loader'],
       },
       {
         test: /\.jsx$/,
         exclude: /node_modules/,
-        use: __DEV__ ? ['react-hot-loader/webpack', 'babel-loader'] : ['babel-loader']
+        use: __DEV__ ? ['react-hot-loader/webpack', 'babel-loader'] : ['babel-loader'],
       },
       { test: /\.eot(\?v=\d+.\d+.\d+)?$/, use: 'file-loader' },
       { test: /\.(woff|woff2)$/, use: 'file-loader' },
@@ -77,9 +73,14 @@ module.exports = {
         test: /(\.css|\.less)$/,
         use: __DEV__
           ? ['style-loader', 'css-loader?sourceMap', postcssLoaderOptions, lessLoaderOptions]
-          : [MiniCssExtractPlugin.loader, 'css-loader?minimize', postcssLoaderOptions, lessLoaderOptions]
+          : [
+              MiniCssExtractPlugin.loader,
+              'css-loader?minimize',
+              postcssLoaderOptions,
+              lessLoaderOptions,
+            ],
       },
-    ]
+    ],
   },
   stats: {
     colors: true,

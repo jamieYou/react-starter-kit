@@ -11,7 +11,7 @@ import type { apiRes } from '@utils'
     page: 1,
     per_page: 10,
   },
-  data: []
+  data: [],
 })
 export class Collection extends WebAPIStore {
   meta: {
@@ -29,7 +29,7 @@ export class Collection extends WebAPIStore {
   }
 
   @fetchAction.flow
-  async* fetchMoreData() {
+  async *fetchMoreData() {
     const res = yield this.fetchApi({
       page: this.meta.page + 1,
       per_page: this.meta.per_page,
@@ -41,8 +41,12 @@ export class Collection extends WebAPIStore {
   }
 
   @fetchAction.flow
-  async* reFetchData() {
-    const res = yield this.fetchApi({ page: 1, per_page: this.data.length || this.meta.per_page, ...this.params })
+  async *reFetchData() {
+    const res = yield this.fetchApi({
+      page: 1,
+      per_page: this.data.length || this.meta.per_page,
+      ...this.params,
+    })
     this.data = res.data.data
   }
 
