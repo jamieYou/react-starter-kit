@@ -13,7 +13,9 @@ function fetchActionDecorator(target, name, descriptor, { bound = false, useFlow
     try {
       self.setPendingState(name)
       const res = yield oldAction.apply(self, arguments)
-      self.setFulfilledState(res, name)
+      const newState = res instanceof window.Response ? res.data : null
+      self.setFulfilledState(newState, name)
+      return res
     } catch (err) {
       self.setRejectedState(err, name)
       toast.fail(err.message)

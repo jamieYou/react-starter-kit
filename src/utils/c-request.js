@@ -120,8 +120,12 @@ export class CRequest {
 
   async cFetch(): apiRes {
     const res: CResponse = await fetch(this.mergeUrl, this.options)
-    const text = await res.text()
-    res.data = text ? JSON.parse(text) : {}
+    if (res.status >= 500 && res.status < 600) {
+      const err = new Error('服务端错误')
+      err.status = res.status
+      throw err
+    }
+    res.data = await res.json()
     if (res.status >= 200 && res.status < 300) {
       return res
     } else {

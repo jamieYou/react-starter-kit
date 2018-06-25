@@ -19,7 +19,7 @@ export default class ScrollView extends Component {
 
   scrollView: HTMLDivElement
 
-  locationKey = (this.props.location.key || 'root') + (this.props.id || '')
+  locationKey = this.props.id || this.props.location.key || 'root'
 
   scrollTop = 0
 

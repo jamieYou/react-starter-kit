@@ -9,7 +9,7 @@ export default function paramParser(pageKey?: string) {
     return function Parser(props: pageProps) {
       const { location, match } = props
       const params = _.mapValues(match.params, decoder)
-      Object.assign(params, routerStore.query, location.state, { _key: location.key })
+      Object.assign(params, routerStore.query, location.state, { location_key: location.key })
       return <Page key={params[pageKey]} {...props} params={params}/>
     }
   }
