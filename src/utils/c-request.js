@@ -88,7 +88,7 @@ export class CRequest {
   body(body: Object | FormData): CRequest {
     this.options.body = do {
       if (body instanceof FormData) {
-        this.headers({ "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" })
+        delete this.options.headers['Content-Type']
         body
       } else {
         JSON.stringify(body)
@@ -120,13 +120,15 @@ export class CRequest {
 
   async cFetch(): apiRes {
     const res: CResponse = await fetch(this.mergeUrl, this.options)
-    const text = await res.text()
-    res.data = text ? JSON.parse(text) : {}
+    res.data = await do {
+      if (/application\/json/.test(res.headers.get('content-type'))) res.json()
+      else res.text()
+    }
     if (res.status >= 200 && res.status < 300) {
       return res
     } else {
       // 需要和后端定义错误信息的字段(error_msg)
-      const err = new Error(_.get(res, 'data.error', '未知错误'))
+      const err = new Error(_.get(res, 'data.error', '服务端错误'))
       err.status = res.status
       throw err
     }

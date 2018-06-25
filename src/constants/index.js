@@ -1,4 +1,4 @@
-export * from "./environment"
+export * from './env'
 
 export type location = {
   hash: string,

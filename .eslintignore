@@ -1,1 +1,2 @@
-src/store/helper/*
+# eslint 白名单
+dist/*

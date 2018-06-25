@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx'
-import qs from "qs"
+import qs from 'qs'
 import type { location, history } from '@constants'
 import { decoder } from '@utils'
 

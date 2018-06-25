@@ -4,21 +4,14 @@ import { CRequest } from '@utils'
 @observables({
   id: 0,
   created_at: '',
-  isFulfilled: false,
 })
 export class AuthStore extends WebAPIStore {
-  @fetchAction
+  @fetchAction.merge
   login(body) {
     return CRequest.post('sessions').body(body)
   }
 
-  @fetchAction
-  async logout() {
-    await CRequest.delete('sessions')
-    return this.initialState
-  }
-
-  @fetchAction
+  @fetchAction.merge
   fetchData() {
     return CRequest.get('users/current')
   }

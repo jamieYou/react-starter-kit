@@ -1,5 +1,5 @@
 import { flow } from 'mobx'
-import { autoBind } from "@utils"
+import { autoBind } from '@utils'
 
 export default function asyncAction(target, name, descriptor) {
   const oldAction = descriptor.value

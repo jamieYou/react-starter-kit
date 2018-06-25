@@ -23,7 +23,7 @@ export class Collection extends WebAPIStore {
   fetchApi: Object => apiRes
   params: Object = {}
 
-  @fetchAction.bound
+  @fetchAction.merge
   fetchData() {
     return this.fetchApi({ page: 1, per_page: this.meta.per_page, ...this.params })
   }
@@ -52,7 +52,7 @@ export class Collection extends WebAPIStore {
     this.data.clear()
   }
 
-  findItemById(id: number) {
+  findItem(id: number) {
     return this.data.find(item => item.id === id)
   }
 

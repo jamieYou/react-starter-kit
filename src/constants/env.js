@@ -1,16 +1,16 @@
 const environment = process.env.NODE_ENV
 
 const environmentConfig = {
-  "test": {
+  'test': {
     apiHost: location.host
   },
-  "development": {
+  'development': {
     apiHost: location.host
   },
-  "staging": {
+  'staging': {
     apiHost: location.host
   },
-  "production": {
+  'production': {
     apiHost: location.host
   },
 }

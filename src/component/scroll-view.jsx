@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { findDOMNode } from 'react-dom'
-import { withRouter } from "react-router-dom"
+import { withRouter } from 'react-router-dom'
 import { PullToRefresh, WhiteSpace, Button } from 'antd-mobile'
 import { autoBind } from '@utils'
 import type { location } from '@constants'
@@ -19,7 +19,7 @@ export default class ScrollView extends Component {
 
   scrollView: HTMLDivElement
 
-  locationKey = (this.props.location.key || 'root') + (this.props.id || '')
+  locationKey = this.props.id || this.props.location.key || 'root'
 
   scrollTop = 0
 
@@ -37,7 +37,7 @@ export default class ScrollView extends Component {
 
   componentDidMount() {
     const scrollTop = this.constructor.scrollTopList.get(this.locationKey)
-    scrollTop && this.scrollView.scrollTo(0, scrollTop)
+    scrollTop && (this.scrollView.scrollTop = scrollTop)
   }
 
   componentWillUnmount() {
@@ -46,6 +46,7 @@ export default class ScrollView extends Component {
 
   @autoBind
   getScrollViewDom(scrollView) {
+    if (!scrollView) return
     this.scrollView = findDOMNode(scrollView)
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "react-mobx-starter-kit",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": true,
   "homepage": "https://github.com/jamieYou/react-mobx-starter-kit",
   "scripts": {
@@ -20,7 +20,6 @@
     "add-asset-html-webpack-plugin": "^2.1.3",
     "autoprefixer": "^8.6.2",
     "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-import": "^1.8.0",
     "babel-plugin-lodash": "^3.3.4",
@@ -33,8 +32,7 @@
     "cross-env": "^5.1.6",
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
-    "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-react": "^7.9.1",
+    "eslint-config-beansmile": "^1.1.0",
     "eslint-watch": "^3.1.5",
     "express": "^4.16.3",
     "file-loader": "^1.1.11",
@@ -58,10 +56,11 @@
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.0.4",
     "webpack-dev-middleware": "^3.1.3",
-    "webpack-hot-middleware": "^2.22.2"
+    "webpack-hot-middleware": "^2.22.2",
+    "webpack-merge": "^4.1.3"
   },
   "dependencies": {
-    "antd-mobile": "^2.1.11",
+    "antd-mobile": "^2.2.1",
     "babel-polyfill": "^6.26.0",
     "core-decorators": "^0.20.0",
     "core-js": "^2.5.7",

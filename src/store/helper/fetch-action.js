@@ -1,9 +1,9 @@
 import { flow } from 'mobx'
-import type { WebAPIStore } from "./web-api-store"
-import { toast } from "@component"
-import { autoBind } from "@utils"
+import type { WebAPIStore } from './web-api-store'
+import { toast } from '@component'
+import { autoBind } from '@utils'
 
-function fetchActionDecorator(target, name, descriptor, { bound = false, useFlow = false } = {}) {
+function fetchActionDecorator(target, name, descriptor, { bound = false, autoMerge = false, useFlow = false } = {}) {
   const { value } = descriptor
   if (typeof value !== 'function') throw new Error(`${name} is not a function`)
   const oldAction = useFlow ? flow(value) : value
@@ -13,7 +13,11 @@ function fetchActionDecorator(target, name, descriptor, { bound = false, useFlow
     try {
       self.setPendingState(name)
       const res = yield oldAction.apply(self, arguments)
-      self.setFulfilledState(res, name)
+      const newState = do {
+        if (autoMerge) res instanceof window.Response ? res.data : res
+      }
+      self.setFulfilledState(newState, name)
+      return res
     } catch (err) {
       self.setRejectedState(err, name)
       toast.fail(err.message)
@@ -38,3 +42,4 @@ export default function fetchAction(...args) {
 
 fetchAction.bound = fetchActionDecoratorCreate({ bound: true })
 fetchAction.flow = fetchActionDecoratorCreate({ bound: true, useFlow: true })
+fetchAction.merge = fetchActionDecoratorCreate({ autoMerge: true })

@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { md } from "@utils"
+import { md } from '@utils'
 
 export default class Title extends Component {
   props: {
@@ -9,9 +9,9 @@ export default class Title extends Component {
   static setTitle(title) {
     document.title = title
     if (md.is('iPhone')) {
-      const iframe: HTMLIFrameElement = document.createElement("iframe")
-      iframe.style.display = "none"
-      iframe.setAttribute("src", "about:blank")
+      const iframe: HTMLIFrameElement = document.createElement('iframe')
+      iframe.style.display = 'none'
+      iframe.setAttribute('src', 'about:blank')
       const onLoad = () => {
         setTimeout(() => {
           iframe.removeEventListener('load', onLoad)

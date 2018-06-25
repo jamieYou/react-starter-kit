@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import "github-markdown-css"
+import 'github-markdown-css'
 
 export default class InnerHTML extends Component {
   props: {
