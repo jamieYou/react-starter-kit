@@ -53,9 +53,9 @@ export class CRequest {
      **/
     credentials: 'include',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
-    }
+    },
   }
 
   constructor(url, options) {
@@ -88,7 +88,7 @@ export class CRequest {
   body(body: Object | FormData): CRequest {
     this.options.body = do {
       if (body instanceof FormData) {
-        this.headers({ "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" })
+        this.headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' })
         body
       } else {
         JSON.stringify(body)

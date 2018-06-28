@@ -4,11 +4,11 @@ module.exports = {
   port: process.env.PORT || 8000,
   proxyTarget: 'http://127.0.0.1:3000',
   publicPath: '/',
-  srcPath: path.resolve("src"),
+  srcPath: path.resolve('src'),
   get distPath() {
-    return path.join(__dirname, "../dist")
+    return path.join(__dirname, '../dist')
   },
-  viewPath: path.resolve("views"),
+  viewPath: path.resolve('views'),
   NODE_ENV: process.env.NODE_ENV || 'development',
   get __DEV__() {
     return this.NODE_ENV === 'development' || this.NODE_ENV === 'test'
@@ -18,5 +18,5 @@ module.exports = {
   },
   get favicon() {
     return path.join(this.srcPath, 'image/favicon.ico')
-  }
+  },
 }

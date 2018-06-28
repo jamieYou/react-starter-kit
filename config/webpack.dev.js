@@ -8,22 +8,18 @@ const baseConfig = require('./webpack.base.js')
 module.exports = merge(baseConfig, {
   mode: 'development',
   entry: {
-    main: [
-      'react-hot-loader/patch',
-      'webpack-hot-middleware/client?reload=true',
-      './index'
-    ],
+    main: ['react-hot-loader/patch', 'webpack-hot-middleware/client?reload=true', './index'],
   },
   output: {
     publicPath,
-    filename: "[name].bundle.js",
+    filename: '[name].bundle.js',
     chunkFilename: '[name].chunk.js',
   },
   devtool: 'cheap-module-eval-source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: path.join(viewPath, "template.html"),
+      template: path.join(viewPath, 'template.html'),
       filename: 'index.html',
       favicon,
     }),

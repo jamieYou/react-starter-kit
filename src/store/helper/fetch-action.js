@@ -1,7 +1,7 @@
 import { flow } from 'mobx'
-import type { WebAPIStore } from "./web-api-store"
-import { toast } from "@component"
-import { autoBind } from "@utils"
+import type { WebAPIStore } from './web-api-store'
+import { toast } from '@component'
+import { autoBind } from '@utils'
 
 function fetchActionDecorator(target, name, descriptor, { bound = false, useFlow = false } = {}) {
   const { value } = descriptor

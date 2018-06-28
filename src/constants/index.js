@@ -1,4 +1,4 @@
-export * from "./environment"
+export * from './environment'
 
 export type location = {
   hash: string,
@@ -14,14 +14,14 @@ export type history = {
   goBack: Function,
   replace: Function,
   location: location,
-  action: "PUSH" | "POP" | "REPLACE",
+  action: 'PUSH' | 'POP' | 'REPLACE',
 }
 
 export type match = {
   isExact: boolean,
   params: {},
   path: string,
-  url: string
+  url: string,
 }
 
 export type pageProps = {

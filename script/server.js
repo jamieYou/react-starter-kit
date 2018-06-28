@@ -10,12 +10,14 @@ const srcFolder = __DEV__ ? 'src' : 'dist'
 
 app.use(logger('dev'))
 
-app.use(compression({
-  filter: (req, res) => {
-    if (req.headers['x-no-compression']) return false
-    return compression.filter(req, res)
-  }
-}))
+app.use(
+  compression({
+    filter: (req, res) => {
+      if (req.headers['x-no-compression']) return false
+      return compression.filter(req, res)
+    },
+  }),
+)
 
 app.use(express.static(path.resolve(srcFolder)))
 // login example
@@ -30,15 +32,19 @@ if (__DEV__) {
   const config = require('../config/webpack.dev')
   const bundler = webpack(config)
 
-  app.use(webpackDevMiddleware(bundler, {
-    publicPath,
-    stats: config.stats,
-  }))
+  app.use(
+    webpackDevMiddleware(bundler, {
+      publicPath,
+      stats: config.stats,
+    }),
+  )
 
-  app.use(webpackHotMiddleware(bundler, {
-    log: false,
-    heartbeat: 2000
-  }))
+  app.use(
+    webpackHotMiddleware(bundler, {
+      log: false,
+      heartbeat: 2000,
+    }),
+  )
 
   app.use('/', (req, res) => {
     const filename = path.join(bundler.outputPath, 'index.html')
@@ -50,7 +56,7 @@ if (__DEV__) {
   app.use('/', (req, res) => res.sendfile(path.join(srcFolder, publicPath, 'index.html')))
 }
 
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
   res.status(err.status || 500)
   res.json({ error: err.message })
 })

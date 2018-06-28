@@ -5,7 +5,7 @@ import HomePage from './home-page'
 import NotFoundPage from './not-found-page'
 
 Route.defaultProps = {
-  exact: true
+  exact: true,
 }
 
 export default function Routes() {
@@ -13,8 +13,8 @@ export default function Routes() {
     <BrowserRouter>
       <App>
         <Switch>
-          <Route path="/" component={HomePage}/>
-          <Route component={NotFoundPage}/>
+          <Route path="/" component={HomePage} />
+          <Route component={NotFoundPage} />
         </Switch>
       </App>
     </BrowserRouter>

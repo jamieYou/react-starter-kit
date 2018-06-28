@@ -2,9 +2,7 @@ import { Toast } from 'antd-mobile'
 
 function changePromise(name, defaultDuration = 1.5) {
   return (content, duration = defaultDuration, mask): Promise =>
-    new Promise(resolve =>
-      Toast[name](content, duration, resolve, mask)
-    )
+    new Promise(resolve => Toast[name](content, duration, resolve, mask))
 }
 
 const toast = {
