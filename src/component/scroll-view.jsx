@@ -1,13 +1,20 @@
 import React, { Component, Fragment } from 'react'
 import { findDOMNode } from 'react-dom'
 import { withRouter } from 'react-router-dom'
+import InfiniteScroll from 'react-infinite-scroller'
+import classnames from 'classnames'
 import { PullToRefresh, WhiteSpace, Button } from 'antd-mobile'
 import { autoBind } from '@utils'
+import { routerStore } from '@store'
 import type { location } from '@constants'
 
 @withRouter
 export default class ScrollView extends Component {
   static scrollTopList = new Map()
+
+  static defaultProps = {
+    useWindow: false,
+  }
 
   props: {
     children: any,
@@ -15,16 +22,17 @@ export default class ScrollView extends Component {
     onRefresh: Function,
     onEndReached?: Function,
     id?: string,
+    className?: string,
+    useWindow: boolean,
   }
 
   scrollView: HTMLDivElement
 
   locationKey = this.props.id || this.props.location.key || 'root'
 
-  scrollTop = 0
-
   style = {
     height: '100%',
+    flex: 1,
     overflow: 'auto',
     transform: 'translateZ(0px)',
     WebkitOverflowScrolling: 'touch',
@@ -37,11 +45,13 @@ export default class ScrollView extends Component {
 
   componentDidMount() {
     const scrollTop = this.constructor.scrollTopList.get(this.locationKey)
-    scrollTop && (this.scrollView.scrollTop = scrollTop)
+    if (scrollTop) this.props.useWindow ? window.scrollTo(0, scrollTop) : this.scrollView.scrollTop = scrollTop
   }
 
   componentWillUnmount() {
-    this.constructor.scrollTopList.set(this.locationKey, this.scrollView.scrollTop)
+    const scrollTop = this.props.useWindow ? window.scrollY : this.scrollView.scrollTop
+    if (routerStore.history.action === 'POP') this.constructor.scrollTopList.delete(this.locationKey)
+    else this.constructor.scrollTopList.set(this.locationKey, scrollTop)
   }
 
   @autoBind
@@ -63,18 +73,11 @@ export default class ScrollView extends Component {
   async onEndReached() {
     if (this.state.loading) return
     this.setState({ loading: true })
-    Promise.resolve(this.props.onEndReached()).finally(() =>
+    try {
+      await this.props.onEndReached()
+    } finally {
       this.setState({ loading: false })
-    )
-  }
-
-  @autoBind
-  onScroll(event) {
-    const { scrollHeight, clientHeight, scrollTop } = event.target
-    const distanceY = scrollTop - this.scrollTop
-    this.scrollTop = scrollTop
-    const isBottom = clientHeight + scrollTop >= scrollHeight - 60
-    if (isBottom && distanceY > 0) this.onEndReached()
+    }
   }
 
   renderChildren() {
@@ -98,12 +101,26 @@ export default class ScrollView extends Component {
   }
 
   render() {
-    const { onEndReached, onRefresh } = this.props
+    const { onEndReached, onRefresh, className, useWindow } = this.props
     const scrollProps = {
-      style: this.style,
+      style: useWindow ? null : this.style,
       ref: this.getScrollViewDom,
-      onScroll: onEndReached ? this.onScroll : null,
+      className: classnames('scroll-view'),
     }
+    const content = (
+      <InfiniteScroll
+        className={className}
+        pageStart={0}
+        loadMore={this.onEndReached}
+        hasMore={!!onEndReached}
+        useWindow={useWindow}
+        threshold={60}
+        initialLoad={false}
+      >
+        {this.renderChildren()}
+      </InfiniteScroll>
+    )
+
     return do {
       if (onRefresh) {
         <PullToRefresh
@@ -112,11 +129,11 @@ export default class ScrollView extends Component {
           onRefresh={this.onRefresh}
           {...scrollProps}
         >
-          {this.renderChildren()}
+          {content}
         </PullToRefresh>
       } else {
         <div {...scrollProps}>
-          {this.renderChildren()}
+          {content}
         </div>
       }
     }

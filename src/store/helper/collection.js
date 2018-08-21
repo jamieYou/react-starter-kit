@@ -1,18 +1,8 @@
-import { computed, action } from 'mobx'
-import type { IObservableArray } from 'mobx/lib/mobx.js.flow'
-import { observables } from './observables'
+import { computed, action, extendObservable, IObservableArray } from 'mobx'
 import { WebAPIStore } from './web-api-store'
 import fetchAction from './fetch-action'
-import type { apiRes } from '@utils'
+import { apiRes, autoBind } from '@utils'
 
-@observables({
-  meta: {
-    total: 0,
-    page: 1,
-    per_page: 10,
-  },
-  data: []
-})
 export class Collection extends WebAPIStore {
   meta: {
     total: number,
@@ -23,6 +13,20 @@ export class Collection extends WebAPIStore {
   fetchApi: Object => apiRes
   params: Object = {}
 
+  constructor(...args) {
+    super(...args)
+    const state = {
+      meta: {
+        total: 0,
+        page: 1,
+        per_page: 10,
+      }
+    }
+    if (!this.data) state.data = []
+    extendObservable(this, state)
+  }
+
+  @autoBind
   @fetchAction.merge
   fetchData() {
     return this.fetchApi({ page: 1, per_page: this.meta.per_page, ...this.params })
@@ -42,8 +46,13 @@ export class Collection extends WebAPIStore {
 
   @fetchAction.flow
   async* reFetchData() {
-    const res = yield this.fetchApi({ page: 1, per_page: this.data.length || this.meta.per_page, ...this.params })
-    this.data = res.data.data
+    if (this.data.length) {
+      const res = yield this.fetchApi({ page: 1, per_page: this.data.length, ...this.params })
+      this.data = res.data.data
+    } else {
+      const res = yield this.fetchApi({ page: 1, per_page: this.meta.per_page, ...this.params })
+      Object.assign(this, res.data)
+    }
   }
 
   @action.bound

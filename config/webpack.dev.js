@@ -19,7 +19,7 @@ module.exports = merge(baseConfig, {
     filename: '[name].bundle.js',
     chunkFilename: '[name].chunk.js',
   },
-  devtool: 'cheap-module-source-map',
+  devtool: 'cheap-module-eval-source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({

@@ -12,7 +12,13 @@ export class StoreHelper {
     return this._instanceList
   }
 
+  static find(instanceKey) {
+    instanceKey = this.checkKey(instanceKey)
+    return this.instanceList.get(instanceKey)
+  }
+
   static create(instanceKey, newState) {
+    instanceKey = this.checkKey(instanceKey)
     const store = new this(instanceKey)
     newState && store.setState(newState)
     return store

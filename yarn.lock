@@ -5723,6 +5723,12 @@ react-hot-loader@^3.1.3:
     redbox-react "^1.3.6"
     source-map "^0.6.1"
 
+react-infinite-scroller@^1.2.0:
+  version "1.2.0"
+  resolved "http://registry.npm.taobao.org/react-infinite-scroller/download/react-infinite-scroller-1.2.0.tgz#ea89906c5bc918dce486880b59e88847518aa538"
+  dependencies:
+    prop-types "^15.5.8"
+
 react-lifecycles-compat@^3.0.2:
   version "3.0.2"
   resolved "http://registry.npm.taobao.org/react-lifecycles-compat/download/react-lifecycles-compat-3.0.2.tgz#7279047275bd727a912e25f734c0559527e84eff"

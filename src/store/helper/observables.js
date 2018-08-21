@@ -12,10 +12,6 @@ export function observables(properties, shallowList) {
       const result = observable.ref(prototype, key, { initializer: () => value })
       Object.defineProperty(prototype, key, result)
     })
-    Object.defineProperty(prototype, 'initialState', {
-      enumerable: false,
-      value: Object.assign({}, properties, shallowList),
-    })
     return target
   }
 }

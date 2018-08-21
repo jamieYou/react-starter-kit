@@ -32,7 +32,7 @@ const postcssLoaderOptions = {
 module.exports = {
   context: srcPath,
   resolve: {
-    modules: [path.resolve('node_modules')],
+    modules: [srcPath, path.resolve('node_modules')],
     alias: {
       '@store': path.join(srcPath, 'store'),
       '@component': path.join(srcPath, 'component'),
