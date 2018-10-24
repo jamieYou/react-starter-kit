@@ -70,14 +70,7 @@ export class CRequest {
   }
 
   get mergeUrl() {
-    let { url } = this
-    if (this.pathParams) {
-      const { interpolate } = _.templateSettings
-      _.templateSettings.interpolate = /{([\s\S]+?)}/g
-      url = _.template(this.url)(this.pathParams)
-      _.templateSettings.interpolate = interpolate
-    }
-    return url + this.search
+    return this.url + this.search
   }
 
   query(query: Object): CRequest {
@@ -101,11 +94,6 @@ export class CRequest {
     const fd = new FormData()
     _.forEach(body, (item, key) => fd.append(key, item))
     return this.body(fd)
-  }
-
-  params(params: Object): CRequest {
-    this.pathParams = params
-    return this
   }
 
   headers(headers: Object): CRequest {

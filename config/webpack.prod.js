@@ -20,7 +20,7 @@ module.exports = merge(baseConfig, {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(viewPath, 'template.html'),
-      filename: path.join(distPath, 'index.html'),
+      filename: path.join(distPath, 'main.html'),
       favicon,
     }),
     new MiniCssExtractPlugin({
@@ -29,4 +29,3 @@ module.exports = merge(baseConfig, {
     }),
   ],
 })
-

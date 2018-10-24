@@ -41,13 +41,13 @@ if (__DEV__) {
   }))
 
   app.use('/', (req, res) => {
-    const filename = path.join(bundler.outputPath, 'index.html')
+    const filename = path.join(bundler.outputPath, 'main.html')
     const result = bundler.outputFileSystem.readFileSync(filename, 'utf-8')
     res.send(result)
     res.end()
   })
 } else {
-  app.use('/', (req, res) => res.sendfile(path.join(srcFolder, publicPath, 'index.html')))
+  app.use('/', (req, res) => res.sendfile(path.join(srcFolder, publicPath, 'main.html')))
 }
 
 app.use(function (err, req, res, next) {

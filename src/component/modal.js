@@ -22,8 +22,8 @@ function transform(name) {
   }
 }
 
-export const alert: ModalComponent.alert = transform('alert')
-export const prompt: ModalComponent.prompt = transform('prompt')
-export const operation: ModalComponent.operation = transform('operation')
+const alert: ModalComponent.alert = transform('alert')
+const prompt: ModalComponent.prompt = transform('prompt')
+const operation: ModalComponent.operation = transform('operation')
 
 export default { alert, prompt, operation }

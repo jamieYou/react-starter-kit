@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const pxtorem = require('postcss-pxtorem')
 const autoprefixer = require('autoprefixer')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const { publicPath, NODE_ENV, __DEV__, srcPath } = require('../config/env')
+const { NODE_ENV, __DEV__, srcPath } = require('../config/env')
 
 const lessLoaderOptions = {
   loader: 'less-loader',
@@ -31,6 +31,9 @@ const postcssLoaderOptions = {
 
 module.exports = {
   context: srcPath,
+  watchOptions: {
+    ignored: /node_modules/
+  },
   resolve: {
     modules: [srcPath, path.resolve('node_modules')],
     alias: {
@@ -52,7 +55,6 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
-      'PUBLIC_PATH': JSON.stringify(publicPath),
     }),
     // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({ analyzerPort: 8889 }),
   ],

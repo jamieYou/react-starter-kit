@@ -24,7 +24,7 @@ module.exports = merge(baseConfig, {
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(viewPath, 'template.html'),
-      filename: 'index.html',
+      filename: 'main.html',
       favicon,
     }),
   ],
