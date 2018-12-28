@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "fastclick": "^1.0.6",
+    "react-infinite-scroller": "^1.2.0",
+    "antd-mobile": "^2.2.1"
+  }
+}
